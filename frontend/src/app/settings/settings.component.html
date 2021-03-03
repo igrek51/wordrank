@@ -1,0 +1,32 @@
+<div class="panel panel-primary">
+  <div class="panel-heading" id="dict-word">Settings</div>
+  <div class="panel-body">
+
+    <div class="row-form-center">
+      <label for="userLogin">User:</label>
+      <select class="form-control" [(ngModel)]="userId"
+              id="userLogin" name="userLogin">
+        <option *ngFor="let user of users" [ngValue]="user.id">
+          {{user.login}}
+        </option>
+      </select>
+    </div>
+
+    <div class="row-form-center">
+      <label for="dictionaryCode">Dictionary:</label>
+      <select class="form-control" [(ngModel)]="dictionaryCode"
+              id="dictionaryCode" name="dictionaryCode">
+        <option *ngFor="let dict of dicts" [ngValue]="dict.code">
+          {{dict.displayName}}
+        </option>
+      </select>
+    </div>
+
+    <div class="row-form-center">
+      <button type="submit" class="btn btn-success" (click)="saveSettings()">
+        <span class="glyphicon glyphicon-ok" aria-hidden="true"></span> Save
+      </button>
+    </div>
+
+  </div>
+</div>

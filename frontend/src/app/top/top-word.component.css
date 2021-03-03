@@ -1,0 +1,24 @@
+#button-answer-correct, #button-answer-wrong {
+  display: none;
+}
+
+#dict-word {
+  text-align: center;
+  font-weight: bold;
+  font-size: 1.2em;
+
+}
+
+/* empty block with same height as non-empty */
+#dict-word:empty:before {
+  content: "\200b"; /* unicode zero width space character */
+}
+
+#dict-definition {
+  min-height: 3em;
+  text-align: center;
+}
+
+#buttons-panel {
+  text-align: center;
+}

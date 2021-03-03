@@ -1,0 +1,26 @@
+<div class="panel panel-primary">
+  <div class="panel-heading" id="dict-word">Dictionary words <span>({{wordranks.length}})</span>
+  </div>
+  <div class="panel-body">
+
+    <table class="table table-striped table-hover">
+      <thead class="thead-inverse">
+      <tr>
+        <th>Word</th>
+        <th>Definition</th>
+        <th>Rank</th>
+        <th>Tries</th>
+      </tr>
+      </thead>
+      <tbody>
+      <tr *ngFor="let wordrank of wordranks">
+        <td>{{wordrank?.wordName}}</td>
+        <td>{{wordrank?.definition}}</td>
+        <td>{{wordrank?.rankValue}}</td>
+        <td>{{wordrank?.triesCount}}</td>
+      </tr>
+      </tbody>
+    </table>
+
+  </div>
+</div>

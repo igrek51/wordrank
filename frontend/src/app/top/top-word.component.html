@@ -1,0 +1,40 @@
+<div class="panel panel-primary">
+  <div class="panel-heading">
+    <div id="dict-word">
+      {{displayWordName}}
+      <button type="button" id="button-skip" class="btn btn-primary" (click)="playWord()" style="padding: 3px 6px">
+        <span class="glyphicon glyphicon-volume-down" aria-hidden="true"></span>
+      </button>
+    </div>
+  </div>
+  <div class="panel-body">
+    <div id="dict-definition">{{displayDefinition}}</div>
+  </div>
+  <div class="panel-footer" id="buttons-panel">
+    <button type="button" id="button-check" class="btn btn-default" (click)="checkAnswer()">
+      <span class="glyphicon glyphicon-question-sign" aria-hidden="true"></span> Check
+    </button>
+    <button type="button" id="button-answer-correct" class="btn btn-success"
+            (click)="answerCorrect()">
+      <span class="glyphicon glyphicon-ok" aria-hidden="true"></span> Correct
+    </button>
+    <button type="button" id="button-answer-wrong" class="btn btn-danger" (click)="answerWrong()">
+      <span class="glyphicon glyphicon-remove" aria-hidden="true"></span> Wrong
+    </button>
+    <button type="button" id="button-skip" class="btn btn-primary" (click)="skipWord()">
+      <span class="glyphicon glyphicon-step-forward" aria-hidden="true"></span> Skip
+    </button>
+  </div>
+</div>
+
+<div class="well">
+  <div class="dictentry-row">
+    Rank: {{topWord?.rankValue}}
+  </div>
+  <div class="dictentry-row">
+    Tries count: {{topWord?.triesCount}}
+  </div>
+  <div class="dictentry-row">
+    Last use: {{topWord?.lastUse}}
+  </div>
+</div>

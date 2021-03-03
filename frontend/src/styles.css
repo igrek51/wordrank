@@ -1,0 +1,26 @@
+/* You can add global styles to this file, and also import other style files */
+body {
+  font-family: Arial, sans-serif;
+  /* Margin bottom by footer height */
+  margin-bottom: 40px;
+}
+
+.container {
+  max-width: 75rem;
+}
+
+#main-container {
+  padding-left: 0;
+  padding-right: 0;
+}
+
+.no-rounding {
+  border-radius: 0px !important;
+}
+
+/* Sticky footer styles
+-------------------------------------------------- */
+html {
+  position: relative;
+  min-height: 100%;
+}

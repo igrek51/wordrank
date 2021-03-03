@@ -1,0 +1,9 @@
+.row-form-add-word {
+  text-align: center;
+  margin-top: 10px;
+}
+
+.row-form-add-word > .input-group-addon {
+  min-width: 8em;
+  text-align: right;
+}

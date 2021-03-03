@@ -1,0 +1,24 @@
+<div class="panel panel-primary">
+  <div class="panel-heading" id="dict-word">Add new word</div>
+  <div class="panel-body">
+
+    <div class="input-group row-form-add-word">
+      <span class="input-group-addon" id="basic-addon1">Word</span>
+      <input class="form-control" placeholder="Word"
+             aria-describedby="basic-addon1" [(ngModel)]="wordName" (keyup.enter)="addNewWord()">
+    </div>
+
+    <div class="input-group row-form-add-word">
+      <span class="input-group-addon" id="basic-addon2">Definition</span>
+      <input class="form-control" placeholder="Definition"
+             aria-describedby="basic-addon2" [(ngModel)]="definition" (keyup.enter)="addNewWord()">
+    </div>
+
+    <div class="row-form-add-word">
+      <button class="btn btn-success" (click)="addNewWord()">
+        <span class="glyphicon glyphicon-plus" aria-hidden="true"></span> Add
+      </button>
+    </div>
+
+  </div>
+</div>

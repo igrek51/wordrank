@@ -1,0 +1,77 @@
+<div class="panel panel-primary">
+  <div class="panel-heading" id="dict-word">Statistics</div>
+  <div class="panel-body">
+
+    <div *ngFor="let dictStat of dictStats">
+      <div class="panel panel-default">
+        <div class="panel-heading statistics-dictionary-name">
+          Dictionary: {{dictStat.dictDisplayName}}
+        </div>
+        <div class="panel-body">
+
+          <h5>Trained words:</h5>
+          <div class="progress">
+            <div class="progress-bar progress-bar-success progress-bar-striped"
+                 role="progressbar"
+                 [attr.aria-valuenow]="dictStat.trained?.percentage"
+                 aria-valuemin="0" aria-valuemax="100"
+                 [style.width]="dictStat.trained?.percentage + '%'">
+          <span class="progress-centered">
+          <span>{{dictStat.trained?.count}}</span>
+          /
+          <span>{{dictStat.allCount}}</span>
+          </span>
+            </div>
+          </div>
+
+          <h5>Training in progress:</h5>
+          <div class="progress">
+            <div class="progress-bar progress-bar-warning progress-bar-striped"
+                 role="progressbar"
+                 [attr.aria-valuenow]="dictStat.trainingInProgress?.percentage"
+                 aria-valuemin="0" aria-valuemax="100"
+                 [style.width]="dictStat.trainingInProgress?.percentage + '%'">
+          <span class="progress-centered">
+          <span>{{dictStat.trainingInProgress?.count}}</span>
+          /
+          <span>{{dictStat.allCount}}</span>
+          </span>
+            </div>
+          </div>
+
+          <h5>Touched words:</h5>
+          <div class="progress">
+            <div class="progress-bar progress-bar-striped"
+                 role="progressbar"
+                 [attr.aria-valuenow]="dictStat.touched?.percentage"
+                 aria-valuemin="0" aria-valuemax="100"
+                 [style.width]="dictStat.touched?.percentage + '%'">
+          <span class="progress-centered">
+          <span>{{dictStat.touched?.count}}</span>
+          /
+          <span>{{dictStat.allCount}}</span>
+          </span>
+            </div>
+          </div>
+
+          <h5>Cooling down:</h5>
+          <div class="progress">
+            <div class="progress-bar progress-bar-danger progress-bar-striped"
+                 role="progressbar"
+                 [attr.aria-valuenow]="dictStat.coolingDown?.percentage"
+                 aria-valuemin="0" aria-valuemax="100"
+                 [style.width]="dictStat.coolingDown?.percentage + '%'">
+          <span class="progress-centered">
+          <span>{{dictStat.coolingDown?.count}}</span>
+          /
+          <span>{{dictStat.allCount}}</span>
+          </span>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
