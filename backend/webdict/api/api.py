@@ -5,6 +5,7 @@ from webdict.api.dictionary import setup_dictionary_endpoints
 from webdict.api.info import setup_info_endpoints
 from webdict.api.rank import setup_rank_endpoints
 from webdict.api.user import setup_user_endpoints
+from webdict.api.word import setup_word_endpoints
 
 
 def creat_fastapi_app() -> FastAPI:
@@ -32,3 +33,4 @@ def setup_api_endpoints(app: FastAPI):
     setup_rank_endpoints(app)
     setup_user_endpoints(app)
     setup_dictionary_endpoints(app)
+    setup_word_endpoints(app)

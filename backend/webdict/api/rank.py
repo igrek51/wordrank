@@ -22,9 +22,9 @@ def _list_all_ranks(user_id: str, dict_code: str) -> List[Dict]:
     user = find_user_by_id(user_id)
     dictionary = find_dictionary_by_code(dict_code)
     reversed = is_dictionary_reversed(dict_code)
-    models = list(_generate_all_ranks(user, dictionary, reversed))
-    models = sorted(models, key=cmp_to_key(make_top_word_comparator()))
-    return [rank_model_to_dto(model) for model in models]
+    ranks = list(_generate_all_ranks(user, dictionary, reversed))
+    sorted_ranks = sorted(ranks, key=cmp_to_key(make_top_word_comparator()))
+    return [rank_model_to_dto(rank) for rank in sorted_ranks]
 
 
 def _generate_all_ranks(user: models.User, dictionary: models.Dictionary, reversed: bool) -> Iterable[Dict]:

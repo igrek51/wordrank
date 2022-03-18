@@ -11,17 +11,7 @@ COOLDOWN_MAX_PENALTY = 20
 def make_top_word_comparator():
     effective_rank_value_cache = {}
 
-    def getCachedEffectiveRankValue(rank: models.Rank):
-        rank_id = rank.id
-        cached = effective_rank_value_cache.get(rank_id)
-        if cached is not None:
-            return cached
-
-        value = getEffectiveRankValue(rank)
-        effective_rank_value_cache[rank_id] = value
-        return value
-    
-    def getSingleCooldownPenalty(rank: models.Rank) -> float:
+    def get_single_cooldown_penalty(rank: models.Rank) -> float:
         if rank.last_use is None:
             return 0
 
@@ -32,19 +22,29 @@ def make_top_word_comparator():
         
         return (COOLDOWN_SECONDS - elapsed_seconds) * COOLDOWN_MAX_PENALTY / COOLDOWN_SECONDS
     
-    def getBothCooldownPenalty(rank: models.Rank) -> float:
+    def get_both_cooldown_penalty(rank: models.Rank) -> float:
         # if !rank.getReversedRank().isPresent():
         # 	return getSingleCooldownPenalty(rank)
         # return Math.max(getSingleCooldownPenalty(rank), getSingleCooldownPenalty(rank.getReversedRank()
         # 		.get()))
-        return getSingleCooldownPenalty(rank)
+        return get_single_cooldown_penalty(rank)
     
-    def getEffectiveRankValue(rank: models.Rank) -> float:
-        return rank.rank_value - getBothCooldownPenalty(rank)
+    def get_effective_rank_value(rank: models.Rank) -> float:
+        return rank.rank_value - get_both_cooldown_penalty(rank)
+
+    def get_cached_effective_rank_value(rank: models.Rank):
+        rank_id = rank.id
+        cached = effective_rank_value_cache.get(rank_id)
+        if cached is not None:
+            return cached
+
+        value = get_effective_rank_value(rank)
+        effective_rank_value_cache[rank_id] = value
+        return value
 
     def compare(o1: models.Rank, o2: models.Rank) -> float:
-        f1 = getCachedEffectiveRankValue(o1)
-        f2 = getCachedEffectiveRankValue(o2)
+        f1 = get_cached_effective_rank_value(o1)
+        f2 = get_cached_effective_rank_value(o2)
         if f1 != f2:
             return (f2 - f1) * 20
         
