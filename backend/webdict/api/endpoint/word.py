@@ -4,9 +4,9 @@ from fastapi import FastAPI
 from pydantic import BaseModel
 from asgiref.sync import sync_to_async
 
-from webdict.api.database import find_dictionary_by_code, find_user_by_id, word_exists
-from webdict.api.dictionary import is_dictionary_reversed
-from webdict.api.payload import PayloadResponse
+from webdict.api.database.database import find_dictionary_by_code, find_user_by_id, word_exists
+from webdict.api.endpoint.dictionary import is_dictionary_reversed
+from webdict.api.dto.payload import PayloadResponse
 from webdict.djangoapp.words import models
 from webdict.api.logs import get_logger
 

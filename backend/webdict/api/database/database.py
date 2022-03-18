@@ -1,4 +1,3 @@
-
 from webdict.api.errors import EntityNotFound
 from webdict.djangoapp.words import models
 
