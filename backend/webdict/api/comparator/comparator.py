@@ -21,11 +21,14 @@ def make_top_word_comparator():
         return (COOLDOWN_SECONDS - elapsed_seconds) * COOLDOWN_MAX_PENALTY / COOLDOWN_SECONDS
     
     def get_both_cooldown_penalty(rank: RankModel) -> float:
-        # if !rank.getReversedRank().isPresent():
-        # 	return get_single_cooldown_penalty(rank)
-        # return Math.max(get_single_cooldown_penalty(rank), get_single_cooldown_penalty(rank.getReversedRank()
-        # 		.get()))
-        return get_single_cooldown_penalty(rank)
+        penalty = get_single_cooldown_penalty(rank)
+
+        if rank.counter_rank is not None:
+            return penalty
+
+        counter_penalty = get_single_cooldown_penalty(rank.counter_rank)
+        
+        return max(penalty, counter_penalty)
     
     def get_effective_rank_value(rank: RankModel) -> float:
         return float(rank.rankValue) - get_both_cooldown_penalty(rank)

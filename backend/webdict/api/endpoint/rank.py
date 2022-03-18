@@ -31,7 +31,7 @@ def _list_all_ranks(user_id: str, dict_code: str) -> List[RankModel]:
 
     rank_models = list(_generate_all_ranks(user, dictionary, reversed))
     counter_ranks = list(_generate_all_ranks(user, dictionary, not reversed))
-    ranks = [rank_model_to_dto(rank) for rank in rank_models]
+    ranks = _combine_counter_ranks(rank_models, counter_ranks)
 
     sorted_ranks = sorted(ranks, key=cmp_to_key(make_top_word_comparator()))
     return [_cleanup_rank_model(rank) for rank in sorted_ranks]
@@ -71,19 +71,34 @@ def _cleanup_rank_model(model: RankModel) -> RankModel:
 
 
 @sync_to_async
-def _get_top_rank(user_id: str, dict_code: str) -> Dict:
+def _get_top_rank(user_id: str, dict_code: str) -> RankModel:
     user = find_user_by_id(user_id)
     dictionary = find_dictionary_by_code(dict_code)
     reversed = is_dictionary_reversed(dict_code)
 
-    ranks = list(_generate_all_ranks(user, dictionary, reversed))
+    rank_models = list(_generate_all_ranks(user, dictionary, reversed))
     counter_ranks = list(_generate_all_ranks(user, dictionary, not reversed))
+    ranks = _combine_counter_ranks(rank_models, counter_ranks)
 
     random.shuffle(ranks)
     sorted_ranks = sorted(ranks, key=cmp_to_key(make_top_word_comparator()))
+    rank = sorted_ranks[0]
 
-    return rank_model_to_dto(sorted_ranks[0])
+    return _cleanup_rank_model(rank)
 
 
-def _combine_counter_ranks(ranks: List[models.Rank], counter_ranks: List[models.Rank]) -> List[models.Rank]:
-    return ranks
+def _combine_counter_ranks(ranks: List[models.Rank], counter_ranks: List[models.Rank]) -> List[RankModel]:
+    counter_rank_ids = {rank.user_word.id: rank for rank in counter_ranks}
+    out_ranks = []
+
+    for rank_model in ranks:
+        rank = rank_model_to_dto(rank_model)
+
+        word_id = rank_model.user_word.id
+        if word_id in counter_rank_ids:
+            counter_rank_model = counter_rank_ids[word_id]
+            rank.counter_rank = rank_model_to_dto(rank_model)
+
+        out_ranks.append(rank)
+
+    return out_ranks
