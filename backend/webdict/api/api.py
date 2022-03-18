@@ -1,17 +1,28 @@
 from fastapi import FastAPI
 from fastapi.staticfiles import StaticFiles
 from fastapi.responses import RedirectResponse
+from fastapi.middleware.cors import CORSMiddleware
+
 from webdict.api.endpoint.dictionary import setup_dictionary_endpoints
 from webdict.api.endpoint.info import setup_info_endpoints
 from webdict.api.endpoint.rank import setup_rank_endpoints
 from webdict.api.endpoint.user import setup_user_endpoints
 from webdict.api.endpoint.word import setup_word_endpoints
+from webdict.api.endpoint.stats import setup_stats_endpoints
 
 
 def creat_fastapi_app() -> FastAPI:
     app = FastAPI()
+    app.add_middleware(
+        CORSMiddleware,
+        allow_origins=["*"],
+        allow_credentials=True,
+        allow_methods=["*"],
+        allow_headers=["*"],
+    )
 
     subapi = FastAPI()
+
     setup_api_endpoints(subapi)
     app.mount("/webdict/api", subapi)
     app.mount("/webdict//api", subapi)
@@ -34,3 +45,4 @@ def setup_api_endpoints(app: FastAPI):
     setup_user_endpoints(app)
     setup_dictionary_endpoints(app)
     setup_word_endpoints(app)
+    setup_stats_endpoints(app)
