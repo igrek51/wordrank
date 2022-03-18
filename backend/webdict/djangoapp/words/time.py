@@ -21,3 +21,7 @@ def datetime_to_str(dt: datetime) -> str:
 def now() -> datetime:
     """Return current datetime with UTC timezone set"""
     return datetime.now(tz=pytz.UTC)
+
+
+def seconds_ago(dt: datetime) -> int:
+    return datetime_to_timestamp(now()) - datetime_to_timestamp(dt)

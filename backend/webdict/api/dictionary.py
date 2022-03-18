@@ -25,3 +25,10 @@ def _generate_dictionaries() -> Iterable[Dict]:
             "sourceLanguage": object.source_language.code,
             "targetLanguage": object.target_language.code,
         }
+
+
+def is_dictionary_reversed(dict_code: str) -> bool:
+    lang_codes = dict_code.split('-')
+    if len(lang_codes) == 2:
+        return False
+    return len(lang_codes) == 3 and lang_codes[2] == 'r'
