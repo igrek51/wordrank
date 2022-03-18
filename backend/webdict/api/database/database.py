@@ -31,6 +31,13 @@ def word_exists(name: str, user_id: str, dictionary: models.Dictionary) -> bool:
         return False
 
 
+def find_rank_by_id(rank_id: str) -> models.Rank:
+    try:
+        return models.Rank.objects.get(id=rank_id)
+    except models.Rank.DoesNotExist:
+        raise EntityNotFound(f'Rank with id {rank_id} was not found')
+
+
 def find_dictionary_by_code(dict_code: str) -> models.Dictionary:
     lang_codes = dict_code.split('-')
     assert len(lang_codes) == 2 or (len(lang_codes) == 3 and lang_codes[2] == 'r'), 'invalid dictionary code'
