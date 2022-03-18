@@ -28,3 +28,7 @@ recreate-db:
 	python webdict/djangoapp/manage.py makemigrations words
 	python webdict/djangoapp/manage.py migrate
 	python webdict/djangoapp/manage.py createsuperuser
+
+add-migration:
+	python webdict/djangoapp/manage.py makemigrations words
+	python webdict/djangoapp/manage.py migrate

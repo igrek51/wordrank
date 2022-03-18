@@ -57,7 +57,7 @@ class UserWord(models.Model):
 class Rank(models.Model):
     id = models.CharField(max_length=36, primary_key=True, default=new_uuid)
     reversed_dictionary = models.BooleanField()
-    last_use = models.DateTimeField(default=now)
+    last_use = models.DateTimeField(null=True, blank=True)
     rank_value = models.DecimalField(max_digits=6, decimal_places=3, default=0)
     tries_count = models.IntegerField(default=0)
     user_word = models.ForeignKey(UserWord, on_delete=models.CASCADE, related_name='user_word_id')

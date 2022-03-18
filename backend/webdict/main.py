@@ -1,4 +1,3 @@
-import logging
 import uvicorn
 
 from webdict.djangoapp.app.asgi import application as django_app

@@ -1,4 +1,3 @@
-import logging
 from typing import Tuple
 
 from fastapi import FastAPI
@@ -65,6 +64,19 @@ def _must_add_word(word: Word) -> Tuple[Word, str]:
         word=word_model,
     )
     user_word.save()
+
+    rank1 = models.Rank(
+        reversed_dictionary=False,
+        rank_value=0,
+        user_word=user_word,
+    )
+    rank1.save()
+    rank2 = models.Rank(
+        reversed_dictionary=True,
+        rank_value=0,
+        user_word=user_word,
+    )
+    rank2.save()
 
     logger.info(f'new word has been added: {word.word} - {word.definition}')
     return word, f'Word "{word.word} - {word.definition}" has been added successfuly'
