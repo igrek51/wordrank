@@ -8,7 +8,12 @@ build:
 	COMPOSE_DOCKER_CLI_BUILD=1 DOCKER_BUILDKIT=1 docker-compose -f docker-compose.yaml build
 
 run-docker: build
-	docker run --rm -it -p 8000:8000 webdict
+	echo "Working on local modifiable copy"
+	mkdir -p volumes
+	cp -r db volumes/
+
+	docker-compose up webdict-python
+	docker-compose rm -f webdict-python
 
 run-django:
 	python -u webdict/djangoapp/manage.py runserver 0.0.0.0:8000 --noreload

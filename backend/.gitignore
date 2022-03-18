@@ -94,3 +94,4 @@ fabric.properties
 # End of https://www.gitignore.io/api/django,pycharm
 
 *.egg-info
+/volumes

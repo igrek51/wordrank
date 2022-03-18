@@ -12,7 +12,7 @@ def main():
         '/static/admin': django_app,
     }, default=fastapi_app)
 
-    uvicorn.run(app=dispatcher)
+    uvicorn.run(app=dispatcher, host="0.0.0.0", port=8000, log_level="debug")
 
 if __name__ == '__main__':
     main()
