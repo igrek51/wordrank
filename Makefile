@@ -13,3 +13,15 @@ build:
 
 run: build
 	docker run --rm -it -p 8011:8011 webdict
+
+build-frontend:
+	cd frontend && \
+	DOCKER_BUILDKIT=1 docker build -t webdict-frontend:latest -f Dockerfile .
+
+build-frontend-replace: build-frontend
+	set -e ;\
+	rm -rf backend/static/* ;\
+	ID=$$(docker create webdict-frontend:latest) ;\
+	echo $$ID ;\
+	docker cp "$$ID:/build/static" backend/ ;\
+	docker rm -v $$ID ;\

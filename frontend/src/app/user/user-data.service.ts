@@ -4,7 +4,7 @@ import {Router} from "@angular/router";
 @Injectable()
 export class UserDataService implements OnInit {
 
-  userId: number;
+  userId: string;
   username: string;
   dictionary: string;
   reversedDictionary: boolean;
@@ -13,12 +13,12 @@ export class UserDataService implements OnInit {
 
   constructor(private router: Router) {
     // default user logged in initially
-    this.userId = 1
+    this.userId = '1'
     this.username = 'igrek'
     this.dictionary = 'en-pl'
 
     if (this.storage.getItem('userId')) {
-      this.userId = parseInt(this.storage.getItem('userId'));
+      this.userId = this.storage.getItem('userId');
       this.username = this.storage.getItem('username');
     }
     if (this.storage.getItem('dictionaryCode')) {
@@ -45,7 +45,7 @@ export class UserDataService implements OnInit {
     }
   }
 
-  setUser(userId: number, username: string) {
+  setUser(userId: string, username: string) {
     this.userId = userId;
     this.username = username;
 

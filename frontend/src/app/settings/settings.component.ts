@@ -13,7 +13,7 @@ import "rxjs/add/operator/map";
 })
 export class SettingsComponent implements OnInit, AfterContentChecked {
 
-  userId: number;
+  userId: string;
   dictionaryCode: string;
   users = [];
   dicts = [];
