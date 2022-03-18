@@ -1,12 +1,17 @@
-import fastapi
 from fastapi import FastAPI
+from fastapi.staticfiles import StaticFiles
+from fastapi.responses import RedirectResponse
 
 
 def creat_fastapi_app() -> FastAPI:
-    fastapi_app = FastAPI()
+    app = FastAPI()
 
-    @fastapi_app.get("/")
+    @app.get("/")
+    @app.get("/webdict")
+    @app.get("/webdict/")
     async def root():
-        return {"status": "ok"}
+        return RedirectResponse('/webdict/index.html')
 
-    return fastapi_app
+    app.mount('/webdict', StaticFiles(directory="static"), name="webdict_static")
+
+    return app
