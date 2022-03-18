@@ -1,6 +1,10 @@
 from fastapi import FastAPI
 from fastapi.staticfiles import StaticFiles
 from fastapi.responses import RedirectResponse
+from webdict.api.dictionary import setup_dictionary_endpoints
+from webdict.api.info import setup_info_endpoints
+from webdict.api.rank import setup_rank_endpoints
+from webdict.api.user import setup_user_endpoints
 
 
 def creat_fastapi_app() -> FastAPI:
@@ -9,6 +13,7 @@ def creat_fastapi_app() -> FastAPI:
     subapi = FastAPI()
     setup_api_endpoints(subapi)
     app.mount("/webdict/api", subapi)
+    app.mount("/webdict//api", subapi)
     app.mount("/webdict///api", subapi)
 
     @app.get("/")
@@ -23,10 +28,7 @@ def creat_fastapi_app() -> FastAPI:
 
 
 def setup_api_endpoints(app: FastAPI):
-    @app.get("/info")
-    async def info():
-        return {
-            "environmentName": "WebDict",
-            "buildVersion": "2.0.1",
-            "status": "UP",
-        }
+    setup_info_endpoints(app)
+    setup_rank_endpoints(app)
+    setup_user_endpoints(app)
+    setup_dictionary_endpoints(app)
