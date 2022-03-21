@@ -32,3 +32,12 @@ build-frontend-replace: build-frontend
 	docker rm -v $$ID ;\
 
 build: build-frontend-replace build-backend
+
+
+deploy:
+	cd deploy && \
+	ansible-playbook -i inventory.yaml deploy-playbook.yaml
+
+deploy-copy-volumes:
+	cd deploy && \
+	ansible-playbook -i inventory.yaml deploy-playbook.yaml --extra-vars "copy_volumes=true"

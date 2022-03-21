@@ -2,12 +2,12 @@ version: '3'
 services:
 
   webdict-python:
-    build: .
+    build: ../backend
     image: webdict-python
     container_name: webdict-python
     restart: unless-stopped
     user: '1000'
     ports:
-      - "8000:8000"
+      - "8080:8000"
     volumes:
       - ./volumes/db:/src/webdict/db
