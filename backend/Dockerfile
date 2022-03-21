@@ -15,4 +15,4 @@ ENV DJANGO_SETTINGS_MODULE "webdict.djangoapp.app.settings"
 CMD python -u webdict/main.py
 
 EXPOSE 8000
-STOPSIGNAL SIGINT
+STOPSIGNAL SIGTERM

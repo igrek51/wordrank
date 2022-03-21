@@ -9,27 +9,6 @@ COOLDOWN_MAX_PENALTY = 20
 def make_top_word_comparator():
     rank_value_cache = {}
 
-    def get_single_cooldown_penalty(rank: RankModel) -> float:
-        if rank.last_use_datetime is None:
-            return 0
-
-        elapsed_seconds = seconds_ago(rank.last_use_datetime)
-        
-        if elapsed_seconds >= COOLDOWN_SECONDS:
-            return 0
-        
-        return (COOLDOWN_SECONDS - elapsed_seconds) * COOLDOWN_MAX_PENALTY / COOLDOWN_SECONDS
-    
-    def get_both_cooldown_penalty(rank: RankModel) -> float:
-        penalty = get_single_cooldown_penalty(rank)
-        if rank.counter_rank is not None:
-            return penalty
-        counter_penalty = get_single_cooldown_penalty(rank.counter_rank)
-        return max(penalty, counter_penalty)
-    
-    def get_effective_rank_value(rank: RankModel) -> float:
-        return float(rank.rankValue) - get_both_cooldown_penalty(rank)
-
     def get_cached_rank_value(rank: RankModel):
         cached = rank_value_cache.get(rank.rankId)
         if cached is not None:
@@ -59,3 +38,27 @@ def make_top_word_comparator():
         return 0
 
     return compare
+
+
+def get_single_cooldown_penalty(rank: RankModel) -> float:
+    if rank.last_use_datetime is None:
+        return 0
+
+    elapsed_seconds = seconds_ago(rank.last_use_datetime)
+    
+    if elapsed_seconds >= COOLDOWN_SECONDS:
+        return 0
+    
+    return (COOLDOWN_SECONDS - elapsed_seconds) * COOLDOWN_MAX_PENALTY / COOLDOWN_SECONDS
+
+
+def get_both_cooldown_penalty(rank: RankModel) -> float:
+    penalty = get_single_cooldown_penalty(rank)
+    if rank.counter_rank is not None:
+        return penalty
+    counter_penalty = get_single_cooldown_penalty(rank.counter_rank)
+    return max(penalty, counter_penalty)
+    
+
+def get_effective_rank_value(rank: RankModel) -> float:
+    return float(rank.rankValue) - get_both_cooldown_penalty(rank)

@@ -1,3 +1,4 @@
+from typing import Iterable
 from webdict.api.errors import EntityNotFound
 from webdict.djangoapp.words import models
 
@@ -47,3 +48,15 @@ def find_dictionary_by_code(dict_code: str) -> models.Dictionary:
         return models.Dictionary.objects.get(source_language_id=source_lang.id, target_language_id=target_lang.id)
     except models.Dictionary.DoesNotExist:
         raise EntityNotFound(f'Dictionary with code {dict_code} was not found')
+
+
+def generate_all_ranks(
+    user: models.User, dictionary: models.Dictionary, reversed: bool
+) -> Iterable[models.Rank]:
+    objects = models.Rank.objects.filter(
+        reversed_dictionary=reversed,
+        user_word__user=user,
+        user_word__word__dictionary=dictionary,
+    )
+    for model in objects:
+        yield model

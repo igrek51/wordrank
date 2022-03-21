@@ -9,7 +9,7 @@ from webdict.api.comparator.latest import make_latest_word_comparator
 from webdict.api.comparator.oldest import make_oldest_word_comparator
 
 from webdict.api.comparator.top import make_top_word_comparator
-from webdict.api.database.database import find_dictionary_by_code, find_rank_by_id, find_user_by_id
+from webdict.api.database.database import find_dictionary_by_code, find_rank_by_id, find_user_by_id, generate_all_ranks
 from webdict.api.dto.payload import PayloadResponse
 from webdict.api.dto.rank import RankModel
 from webdict.api.endpoint.dictionary import is_dictionary_reversed
@@ -64,24 +64,12 @@ def _list_all_ranks(user_id: str, dict_code: str) -> List[RankModel]:
     dictionary = find_dictionary_by_code(dict_code)
     reversed = is_dictionary_reversed(dict_code)
 
-    rank_models = list(_generate_all_ranks(user, dictionary, reversed))
-    counter_ranks = list(_generate_all_ranks(user, dictionary, not reversed))
-    ranks = _combine_counter_ranks(rank_models, counter_ranks)
+    rank_models = list(generate_all_ranks(user, dictionary, reversed))
+    counter_ranks = list(generate_all_ranks(user, dictionary, not reversed))
+    ranks = combine_counter_ranks(rank_models, counter_ranks)
 
     sorted_ranks = sorted(ranks, key=cmp_to_key(make_top_word_comparator()))
     return [_cleanup_rank_model(rank) for rank in sorted_ranks]
-
-
-def _generate_all_ranks(
-    user: models.User, dictionary: models.Dictionary, reversed: bool
-) -> Iterable[models.Rank]:
-    objects = models.Rank.objects.filter(
-        reversed_dictionary=reversed,
-        user_word__user=user,
-        user_word__word__dictionary=dictionary,
-    )
-    for model in objects:
-        yield model
 
 
 def rank_model_to_dto(model: models.Rank) -> RankModel:
@@ -134,9 +122,9 @@ def _get_next_rank(user_id: str, dict_code: str, comparator) -> RankModel:
     dictionary = find_dictionary_by_code(dict_code)
     reversed = is_dictionary_reversed(dict_code)
 
-    rank_models = list(_generate_all_ranks(user, dictionary, reversed))
-    counter_ranks = list(_generate_all_ranks(user, dictionary, not reversed))
-    ranks = _combine_counter_ranks(rank_models, counter_ranks)
+    rank_models = list(generate_all_ranks(user, dictionary, reversed))
+    counter_ranks = list(generate_all_ranks(user, dictionary, not reversed))
+    ranks = combine_counter_ranks(rank_models, counter_ranks)
 
     random.shuffle(ranks)
     sorted_ranks = sorted(ranks, key=cmp_to_key(comparator))
@@ -145,7 +133,7 @@ def _get_next_rank(user_id: str, dict_code: str, comparator) -> RankModel:
     return _cleanup_rank_model(rank)
 
 
-def _combine_counter_ranks(ranks: List[models.Rank], counter_ranks: List[models.Rank]) -> List[RankModel]:
+def combine_counter_ranks(ranks: List[models.Rank], counter_ranks: List[models.Rank]) -> List[RankModel]:
     counter_rank_ids = {rank.user_word.id: rank for rank in counter_ranks}
     out_ranks = []
 
