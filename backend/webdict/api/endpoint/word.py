@@ -42,7 +42,6 @@ def _add_word(word: Word) -> PayloadResponse:
 def _must_add_word(word: Word) -> Tuple[Word, str]:
     user: models.User = find_user_by_id(word.userId)
     dictionary: models.Dictionary = find_dictionary_by_code(word.dictionaryCode)
-    reversed: bool = is_dictionary_reversed(word.dictionaryCode)
 
     if not word.word:
         raise ValueError("word name was not given")
