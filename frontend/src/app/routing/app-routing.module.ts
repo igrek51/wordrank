@@ -12,7 +12,7 @@ const routes: Routes = [
 {path: '', redirectTo: '/word/top', pathMatch: 'full'
 },
 {
-path: 'word/:sortby',
+    path: 'word/:sortby',
     component: TopWordComponent,
     canActivate: [AuthGuardService],
     runGuardsAndResolvers: 'always'

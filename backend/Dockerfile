@@ -10,7 +10,7 @@ COPY static/. /src/webdict/static/
 COPY webdict/. /src/webdict/webdict/
 RUN cd /src/webdict && python setup.py develop
 
-ENV DEBUG False
+ENV DEBUG false
 ENV DJANGO_SETTINGS_MODULE "webdict.djangoapp.app.settings"
 CMD python -u webdict/main.py
 
