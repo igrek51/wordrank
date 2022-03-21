@@ -1,17 +1,14 @@
-from typing import Callable, Dict, Iterable, List
-from functools import cmp_to_key
+from typing import Callable, List
 
 from fastapi import FastAPI
 from asgiref.sync import sync_to_async
 
-from webdict.api.comparator.top import get_single_cooldown_penalty, make_top_word_comparator
+from webdict.api.comparator.top import get_single_cooldown_penalty
 from webdict.api.database.database import find_dictionary_by_code, find_user_by_id, generate_all_ranks
 from webdict.api.dto.rank import RankModel
 from webdict.api.dto.stats import ProgressBarData, StatisticsModel
-from webdict.api.endpoint.dictionary import is_dictionary_reversed
 from webdict.api.endpoint.rank import combine_counter_ranks, rank_model_to_dto
 from webdict.djangoapp.words import models
-from webdict.djangoapp.words.time import datetime_to_str, now
 from webdict.api.logs import get_logger
 
 logger = get_logger()

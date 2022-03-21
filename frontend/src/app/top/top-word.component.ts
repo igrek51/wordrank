@@ -1,4 +1,4 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, OnInit, HostListener} from '@angular/core';
 import {HttpClient} from '@angular/common/http';
 import {WordRank} from "../wordrank/WordRank";
 import {UserDataService} from "../user/user-data.service";
@@ -21,13 +21,17 @@ export class TopWordComponent implements OnInit {
   displayDefinition;
   sortby;
 
-constructor(private http: HttpClient, private userData: UserDataService, private route: ActivatedRoute, private router: Router) { }
+  constructor(private http: HttpClient, private userData: UserDataService, private route: ActivatedRoute, private router: Router) { }
 
   ngOnInit() {
     // force to reload on url change
     this.router.routeReuseStrategy.shouldReuseRoute = function(){
       return false;
     };
+
+    $(function () {
+      $('[data-toggle="tooltip"]').tooltip()
+    })
 
     this.sortby = this.route.snapshot.paramMap.get("sortby")
     this.nextTopWordInit();
@@ -115,4 +119,20 @@ constructor(private http: HttpClient, private userData: UserDataService, private
       err => console.log(err)
     );
   }
+
+  @HostListener('document:keypress', ['$event'])
+  handleKeyboardEvent(event: KeyboardEvent) { 
+    if (event.keyCode === 32) { // space
+      this.checkAnswer();
+    } else if (event.key == 'q') {
+      this.answerCorrect();
+    } else if (event.key == 'w') {
+      this.answerWrong();
+    } else if (event.key == 'e') {
+      this.skipWord();
+    } else if (event.key == 'r') {
+      this.playWord();
+    }
+  }
+
 }

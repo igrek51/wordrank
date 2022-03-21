@@ -17,6 +17,7 @@ def main():
     dispatcher = AsgiDispatcher({
         '/admin': django_app,
         '/static/admin': django_app,
+        '/dump': django_app,
     }, default=fastapi_app)
 
     uvicorn.run(app=dispatcher, host="0.0.0.0", port=8000, log_level="debug")

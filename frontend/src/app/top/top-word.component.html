@@ -2,7 +2,9 @@
   <div class="panel-heading">
     <div id="dict-word">
       {{displayWordName}}
-      <button type="button" id="button-skip" class="btn btn-primary" (click)="playWord()" style="padding: 3px 6px">
+      <button type="button" id="button-skip" class="btn btn-primary" style="padding: 3px 6px"
+        (click)="playWord()"
+        data-toggle="tooltip" data-placement="top" title="Shortcut key: R">
         <span class="glyphicon glyphicon-volume-down" aria-hidden="true"></span>
       </button>
     </div>
@@ -11,17 +13,24 @@
     <div id="dict-definition">{{displayDefinition}}</div>
   </div>
   <div class="panel-footer" id="buttons-panel">
-    <button type="button" id="button-check" class="btn btn-default" (click)="checkAnswer()">
+    <button type="button" id="button-check" class="btn btn-default" 
+      (click)="checkAnswer()" 
+      data-toggle="tooltip" data-placement="bottom" title="Shortcut key: Space">
       <span class="glyphicon glyphicon-question-sign" aria-hidden="true"></span> Check
     </button>
     <button type="button" id="button-answer-correct" class="btn btn-success"
-            (click)="answerCorrect()">
+      (click)="answerCorrect()"
+      data-toggle="tooltip" data-placement="bottom" title="Shortcut key: Q">
       <span class="glyphicon glyphicon-ok" aria-hidden="true"></span> Correct
     </button>
-    <button type="button" id="button-answer-wrong" class="btn btn-danger" (click)="answerWrong()">
+    <button type="button" id="button-answer-wrong" class="btn btn-danger" 
+      (click)="answerWrong()"
+      data-toggle="tooltip" data-placement="bottom" title="Shortcut key: W">
       <span class="glyphicon glyphicon-remove" aria-hidden="true"></span> Wrong
     </button>
-    <button type="button" id="button-skip" class="btn btn-primary" (click)="skipWord()">
+    <button type="button" id="button-skip" class="btn btn-primary"
+      (click)="skipWord()"
+      data-toggle="tooltip" data-placement="bottom" title="Shortcut key: E">
       <span class="glyphicon glyphicon-step-forward" aria-hidden="true"></span> Skip
     </button>
   </div>

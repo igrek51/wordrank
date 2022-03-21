@@ -1,8 +1,8 @@
 from django.shortcuts import redirect
-from django.conf import settings
 from django.urls import include, path
 from django.contrib import admin
 
+from webdict.djangoapp.words.dump import dump_database
 from webdict.djangoapp.words.staticfiles import staticfiles_urlpatterns
 
 urlpatterns = [
@@ -10,4 +10,5 @@ urlpatterns = [
     path('webdict/', include('webdict.djangoapp.words.urls')),
     path('admin/', admin.site.urls),
     path('promi/', include('django_prometheus.urls')),
+    path('dump/', dump_database),
 ] + staticfiles_urlpatterns()
