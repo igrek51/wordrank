@@ -1,4 +1,4 @@
-from webdict.api.dto.rank import RankModel
+from webdict.api.dto.rank import InternalRank
 from webdict.djangoapp.words.time import seconds_ago
 
 
@@ -9,7 +9,7 @@ COOLDOWN_MAX_PENALTY = 1000
 def make_hardest_word_comparator():
     value_cache = {}
 
-    def get_single_cooldown_penalty(rank: RankModel) -> float:
+    def get_single_cooldown_penalty(rank: InternalRank) -> float:
         if rank.last_use_datetime is None:
             return 0
 
@@ -20,10 +20,10 @@ def make_hardest_word_comparator():
         
         return (COOLDOWN_SECONDS - elapsed_seconds) * COOLDOWN_MAX_PENALTY / COOLDOWN_SECONDS
     
-    def get_effective_value(rank: RankModel) -> float:
+    def get_effective_value(rank: InternalRank) -> float:
         return float(rank.triesCount) - get_single_cooldown_penalty(rank)
 
-    def get_cached_value(rank: RankModel):
+    def get_cached_value(rank: InternalRank):
         cached = value_cache.get(rank.rankId)
         if cached is not None:
             return cached
@@ -31,7 +31,7 @@ def make_hardest_word_comparator():
         value_cache[rank.rankId] = value
         return value
 
-    def compare(r1: RankModel, r2: RankModel) -> float:
+    def compare(r1: InternalRank, r2: InternalRank) -> float:
         f1 = get_cached_value(r1)
         f2 = get_cached_value(r2)
         if f1 != f2:

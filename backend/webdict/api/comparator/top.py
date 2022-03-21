@@ -1,4 +1,4 @@
-from webdict.api.dto.rank import RankModel
+from webdict.api.dto.rank import InternalRank
 from webdict.djangoapp.words.time import seconds_ago
 
 
@@ -9,7 +9,7 @@ COOLDOWN_MAX_PENALTY = 20
 def make_top_word_comparator():
     rank_value_cache = {}
 
-    def get_cached_rank_value(rank: RankModel):
+    def get_cached_rank_value(rank: InternalRank):
         cached = rank_value_cache.get(rank.rankId)
         if cached is not None:
             return cached
@@ -17,7 +17,7 @@ def make_top_word_comparator():
         rank_value_cache[rank.rankId] = value
         return value
 
-    def compare(r1: RankModel, r2: RankModel) -> float:
+    def compare(r1: InternalRank, r2: InternalRank) -> float:
         f1 = get_cached_rank_value(r1)
         f2 = get_cached_rank_value(r2)
         if f1 != f2:
@@ -40,7 +40,7 @@ def make_top_word_comparator():
     return compare
 
 
-def get_single_cooldown_penalty(rank: RankModel) -> float:
+def get_single_cooldown_penalty(rank: InternalRank) -> float:
     if rank.last_use_datetime is None:
         return 0
 
@@ -52,7 +52,7 @@ def get_single_cooldown_penalty(rank: RankModel) -> float:
     return (COOLDOWN_SECONDS - elapsed_seconds) * COOLDOWN_MAX_PENALTY / COOLDOWN_SECONDS
 
 
-def get_both_cooldown_penalty(rank: RankModel) -> float:
+def get_both_cooldown_penalty(rank: InternalRank) -> float:
     penalty = get_single_cooldown_penalty(rank)
     if rank.counter_rank is not None:
         return penalty
@@ -60,5 +60,5 @@ def get_both_cooldown_penalty(rank: RankModel) -> float:
     return max(penalty, counter_penalty)
     
 
-def get_effective_rank_value(rank: RankModel) -> float:
+def get_effective_rank_value(rank: InternalRank) -> float:
     return float(rank.rankValue) - get_both_cooldown_penalty(rank)
