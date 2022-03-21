@@ -30,6 +30,7 @@ class WordAdmin(admin.ModelAdmin):
         'name',
         'definition',
         'dictionary',
+        'create_time',
     )
     search_fields = [
         'id',
