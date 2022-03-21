@@ -31,6 +31,12 @@ build-frontend-replace: build-frontend
 	docker cp "$$ID:/build/static" backend/ ;\
 	docker rm -v $$ID ;\
 
+frontend-setup:
+	nvm install 9
+
+frontend-run:
+	cd frontend && npm start
+
 build: build-backend
 
 
