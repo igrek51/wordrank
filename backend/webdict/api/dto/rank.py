@@ -20,6 +20,7 @@ class InternalRank:
     rankId: str
     rankValue: float
     triesCount: int
+    user_word_id: str
     lastUse: Optional[str] = None
     counter_rank: Optional['InternalRank'] = None
     last_use_datetime: Optional[datetime] = None

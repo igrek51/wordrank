@@ -9,7 +9,7 @@ from webdict.api.comparator.latest import make_latest_word_comparator
 from webdict.api.comparator.oldest import make_oldest_word_comparator
 
 from webdict.api.comparator.top import make_top_word_comparator
-from webdict.api.database.database import find_dictionary_by_code, find_rank_by_id, find_user_by_id, generate_all_ranks
+from webdict.api.database.database import find_dictionary_by_code, find_rank_by_id, find_user_by_id, find_userword_by_id, generate_all_ranks, generate_all_userwords, generate_all_words
 from webdict.api.dto.payload import PayloadResponse
 from webdict.api.dto.rank import InternalRank, ExternalRank
 from webdict.api.endpoint.dictionary import is_dictionary_reversed
@@ -61,17 +61,16 @@ def setup_rank_endpoints(app: FastAPI):
 
 @sync_to_async
 def _list_all_ranks(user_id: str, dict_code: str) -> List[ExternalRank]:
-    with measure_duration('_list_all_ranks'):
-        user = find_user_by_id(user_id)
-        dictionary = find_dictionary_by_code(dict_code)
-        reversed = is_dictionary_reversed(dict_code)
+    user = find_user_by_id(user_id)
+    dictionary = find_dictionary_by_code(dict_code)
+    reversed = is_dictionary_reversed(dict_code)
 
-        rank_models = list(generate_all_ranks(user, dictionary, reversed))
-        counter_ranks = list(generate_all_ranks(user, dictionary, not reversed))
-        internal_ranks: List[InternalRank] = combine_counter_ranks(rank_models, counter_ranks)
+    rank_models = list(generate_all_ranks(user, dictionary, reversed))
+    counter_ranks = list(generate_all_ranks(user, dictionary, not reversed))
+    internal_ranks: List[InternalRank] = combine_counter_ranks(rank_models, counter_ranks)
 
-        sorted_ranks: List[InternalRank] = sorted(internal_ranks, key=cmp_to_key(make_top_word_comparator()))
-        return internal_ranks_to_external(sorted_ranks, dictionary.id, reversed)
+    sorted_ranks: List[InternalRank] = sorted(internal_ranks, key=cmp_to_key(make_top_word_comparator()))
+    return internal_ranks_to_external(sorted_ranks, dictionary.id, reversed, user)
 
 
 @sync_to_async
@@ -150,6 +149,7 @@ def rank_model_to_internal(
         lastUse=datetime_to_str(last_use) if last_use else None,
         counter_rank=None,
         last_use_datetime=last_use,
+        user_word_id=model.user_word_id,
     )
 
 
@@ -171,16 +171,28 @@ def internal_ranks_to_external(
     ranks: List[InternalRank],
     dictionary_id: str, 
     reversed_dictionary: bool,
+    user: models.User,
 ) -> List[ExternalRank]:
+    wordnames = {}
+    word_models = generate_all_words(dictionary_id)
+    for word_model in word_models:
+        wordnames[word_model.id] = (word_model.name, word_model.definition)
+
+    userwordnames = {}
+    userword_models = generate_all_userwords(user, dictionary_id)
+    for userword in userword_models:
+        userwordnames[userword.id] = wordnames[userword.word_id]
+
     ext_ranks = []
     for rank in ranks:
-        model = find_rank_by_id(rank.rankId)
+        word_name = userwordnames[rank.user_word_id][0]
+        definition = userwordnames[rank.user_word_id][1]
         ext_rank = ExternalRank(
-            rankId=model.id,
+            rankId=rank.rankId,
             dictionaryId=dictionary_id,
             reversedDictionary=reversed_dictionary,
-            wordName=model.user_word.word.name,
-            definition=model.user_word.word.definition,
+            wordName=word_name,
+            definition=definition,
             rankValue=rank.rankValue,
             triesCount=rank.triesCount,
             lastUse=rank.lastUse,

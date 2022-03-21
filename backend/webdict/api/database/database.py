@@ -39,6 +39,13 @@ def find_rank_by_id(rank_id: str) -> models.Rank:
         raise EntityNotFound(f'Rank with id {rank_id} was not found')
 
 
+def find_userword_by_id(id: str) -> models.UserWord:
+    try:
+        return models.UserWord.objects.get(id=id)
+    except models.UserWord.DoesNotExist:
+        raise EntityNotFound(f'UserWord with id {id} was not found')
+
+
 def find_dictionary_by_code(dict_code: str) -> models.Dictionary:
     lang_codes = dict_code.split('-')
     assert len(lang_codes) == 2 or (len(lang_codes) == 3 and lang_codes[2] == 'r'), 'invalid dictionary code'
@@ -51,12 +58,33 @@ def find_dictionary_by_code(dict_code: str) -> models.Dictionary:
 
 
 def generate_all_ranks(
-    user: models.User, dictionary: models.Dictionary, reversed: bool
+    user: models.User, dictionary: models.Dictionary, reversed: bool,
 ) -> Iterable[models.Rank]:
     objects = models.Rank.objects.filter(
         reversed_dictionary=reversed,
         user_word__user=user,
         user_word__word__dictionary=dictionary,
+    )
+    for model in objects:
+        yield model
+
+
+def generate_all_userwords(
+    user: models.User, dictionary_id: str,
+) -> Iterable[models.UserWord]:
+    objects = models.UserWord.objects.filter(
+        user=user,
+        word__dictionary__id=dictionary_id,
+    )
+    for model in objects:
+        yield model
+
+
+def generate_all_words(
+    dictionary_id: str,
+) -> Iterable[models.Word]:
+    objects = models.Word.objects.filter(
+        dictionary__id=dictionary_id,
     )
     for model in objects:
         yield model
