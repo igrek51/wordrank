@@ -11,6 +11,9 @@ all:
     component_dir: "/opt/webdict-python"
     component_dirs:
       - "{{ component_dir }}"
+      - "{{ component_dir }}/volumes"
+      - "{{ component_dir }}/volumes/db"
+    build_image: false
     copy_volumes: false
     copy_volumes_data:
       - src: "../backend/db/webdict.sqlite"

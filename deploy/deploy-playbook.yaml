@@ -1,7 +1,8 @@
 - hosts: localhost
   tasks:
     - name: "build docker image {{ component_name }}"
-      command: "COMPOSE_DOCKER_CLI_BUILD=1 DOCKER_BUILDKIT=1 docker-compose -f docker-compose.yaml build"
+      when: build_image | bool
+      command: "docker-compose -f docker-compose.yaml build"
       args:
         chdir: "."
 

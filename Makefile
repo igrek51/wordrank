@@ -31,13 +31,13 @@ build-frontend-replace: build-frontend
 	docker cp "$$ID:/build/static" backend/ ;\
 	docker rm -v $$ID ;\
 
-build: build-frontend-replace build-backend
+build: build-backend
 
 
-deploy:
+deploy: build-backend
 	cd deploy && \
 	ansible-playbook -i inventory.yaml deploy-playbook.yaml
 
-deploy-copy-volumes:
+deploy-copy-volumes: build-backend
 	cd deploy && \
 	ansible-playbook -i inventory.yaml deploy-playbook.yaml --extra-vars "copy_volumes=true"
