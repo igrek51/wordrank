@@ -1,14 +1,16 @@
 from typing import Dict, Iterable, List
 
-from fastapi import FastAPI
+from fastapi import FastAPI, Cookie
 from asgiref.sync import sync_to_async
 
 from webdict.djangoapp.words import models
+from webdict.api.session import verify_session
 
 
 def setup_user_endpoints(app: FastAPI):
     @app.get("/user")
-    async def users():
+    async def users(sessionid: str = Cookie(None)):
+        await verify_session(sessionid)
         return await _list_users()
 
 

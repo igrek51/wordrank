@@ -1,12 +1,12 @@
 from typing import Tuple
 
-from fastapi import FastAPI
+from fastapi import FastAPI, Cookie
 from pydantic import BaseModel
 from asgiref.sync import sync_to_async
 
 from webdict.api.database.database import find_dictionary_by_code, find_user_by_id, word_exists
-from webdict.api.endpoint.dictionary import is_dictionary_reversed
 from webdict.api.dto.payload import PayloadResponse
+from webdict.api.session import verify_session
 from webdict.djangoapp.words import models
 from webdict.api.logs import get_logger
 from webdict.djangoapp.words.time import now
@@ -23,7 +23,8 @@ class Word(BaseModel):
 
 def setup_word_endpoints(app: FastAPI):
     @app.post("/word")
-    async def add_word(word: Word) -> PayloadResponse:
+    async def add_word(word: Word, sessionid: str = Cookie(None)) -> PayloadResponse:
+        await verify_session(sessionid)
         return await _add_word(word)
 
 

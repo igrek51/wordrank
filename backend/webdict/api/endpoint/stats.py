@@ -1,6 +1,6 @@
 from typing import Callable, List
 
-from fastapi import FastAPI
+from fastapi import FastAPI, Cookie
 from asgiref.sync import sync_to_async
 
 from webdict.api.comparator.top import get_single_cooldown_penalty
@@ -10,13 +10,16 @@ from webdict.api.dto.stats import ProgressBarData, StatisticsModel
 from webdict.api.endpoint.rank import combine_counter_ranks, rank_model_to_internal
 from webdict.djangoapp.words import models
 from webdict.api.logs import get_logger
+from webdict.api.session import verify_session
+
 
 logger = get_logger()
 
 
 def setup_stats_endpoints(app: FastAPI):
     @app.get("/stats/{user_id}/{dict_code}")
-    async def stats_user_dict(user_id: str, dict_code: str) -> List[StatisticsModel]:
+    async def stats_user_dict(user_id: str, dict_code: str, sessionid: str = Cookie(None)) -> List[StatisticsModel]:
+        await verify_session(sessionid)
         return await _list_stats(user_id, dict_code)
 
 

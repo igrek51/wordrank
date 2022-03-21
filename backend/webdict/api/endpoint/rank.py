@@ -1,8 +1,8 @@
-from typing import List, Optional
+from typing import List
 from functools import cmp_to_key
 import random
 
-from fastapi import FastAPI
+from fastapi import FastAPI, Cookie
 from asgiref.sync import sync_to_async
 from webdict.api.comparator.hardest import make_hardest_word_comparator
 from webdict.api.comparator.latest import make_latest_word_comparator
@@ -13,49 +13,58 @@ from webdict.api.database.database import find_dictionary_by_code, find_rank_by_
 from webdict.api.dto.payload import PayloadResponse
 from webdict.api.dto.rank import InternalRank, ExternalRank
 from webdict.api.endpoint.dictionary import is_dictionary_reversed
-from webdict.api.performance import measure_duration
 from webdict.djangoapp.words import models
 from webdict.djangoapp.words.time import datetime_to_str, now
 from webdict.api.logs import get_logger
+from webdict.api.session import verify_session
 
 logger = get_logger()
 
 
 def setup_rank_endpoints(app: FastAPI):
     @app.get("/rank/all/{user_id}/{dict_code}")
-    async def rank_all_user_dict(user_id: str, dict_code: str) -> List[ExternalRank]:
+    async def rank_all_user_dict(user_id: str, dict_code: str, sessionid: str = Cookie(None)) -> List[ExternalRank]:
+        await verify_session(sessionid)
         return await _list_all_ranks(user_id, dict_code)
 
     @app.get("/rank/top/{user_id}/{dict_code}")
-    async def rank_top_user_dict(user_id: str, dict_code: str) -> ExternalRank:
+    async def rank_top_user_dict(user_id: str, dict_code: str, sessionid: str = Cookie(None)) -> ExternalRank:
+        await verify_session(sessionid)
         return await _get_top_rank(user_id, dict_code)
 
     @app.get("/rank/hardest/{user_id}/{dict_code}")
-    async def rank_hardest_user_dict(user_id: str, dict_code: str) -> ExternalRank:
+    async def rank_hardest_user_dict(user_id: str, dict_code: str, sessionid: str = Cookie(None)) -> ExternalRank:
+        await verify_session(sessionid)
         return await _get_hardest_rank(user_id, dict_code)
 
     @app.get("/rank/oldest/{user_id}/{dict_code}")
-    async def rank_oldest_user_dict(user_id: str, dict_code: str) -> ExternalRank:
+    async def rank_oldest_user_dict(user_id: str, dict_code: str, sessionid: str = Cookie(None)) -> ExternalRank:
+        await verify_session(sessionid)
         return await _get_oldest_rank(user_id, dict_code)
 
     @app.get("/rank/latest/{user_id}/{dict_code}")
-    async def rank_latest_user_dict(user_id: str, dict_code: str) -> ExternalRank:
+    async def rank_latest_user_dict(user_id: str, dict_code: str, sessionid: str = Cookie(None)) -> ExternalRank:
+        await verify_session(sessionid)
         return await _get_latest_rank(user_id, dict_code)
 
     @app.post("/rank/{rank_id}/skip")
-    async def rank_id_skip(rank_id: str) -> PayloadResponse:
+    async def rank_id_skip(rank_id: str, sessionid: str = Cookie(None)) -> PayloadResponse:
+        await verify_session(sessionid)
         return await _update_rank_realively(rank_id, 0)
 
     @app.post("/rank/{rank_id}/answer/correct")
-    async def rank_id_correct(rank_id: str) -> PayloadResponse:
+    async def rank_id_correct(rank_id: str, sessionid: str = Cookie(None)) -> PayloadResponse:
+        await verify_session(sessionid)
         return await _update_rank_realively(rank_id, -1)
 
     @app.post("/rank/{rank_id}/answer/wrong")
-    async def rank_id_wrong(rank_id: str) -> PayloadResponse:
+    async def rank_id_wrong(rank_id: str, sessionid: str = Cookie(None)) -> PayloadResponse:
+        await verify_session(sessionid)
         return await _update_rank_realively(rank_id, +1)
 
     @app.get("/rank/offset/{user_id}/{dict_code}/{offset}")
-    async def rank_move_by_offset(user_id: str, dict_code: str, offset: float):
+    async def rank_move_by_offset(user_id: str, dict_code: str, offset: float, sessionid: str = Cookie(None)):
+        await verify_session(sessionid)
         return await _move_ranks_by_offset(user_id, dict_code, offset)
 
 

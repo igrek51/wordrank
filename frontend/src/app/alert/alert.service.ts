@@ -41,6 +41,17 @@ export class AlertService {
     this.alert(message, 'alert-danger');
   }
 
+  reportResponseError(err: any) {
+    let message = err.statusText;
+    if (err.hasOwnProperty('error') && err.error.hasOwnProperty('error')) { 
+      message = err.error.error;
+    } else {
+      message = err.status + ' ' + err.statusText;
+    }
+    this.error(message);
+    console.log(err);
+  }
+
   private alert(message: string, type: string, keepAfterRouteChange = false) {
     if (!this.keepAfterRouteChange) {
       this.clear();

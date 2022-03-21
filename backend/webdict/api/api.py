@@ -1,6 +1,6 @@
-from fastapi import FastAPI
+from fastapi import FastAPI, Request
 from fastapi.staticfiles import StaticFiles
-from fastapi.responses import RedirectResponse
+from fastapi.responses import RedirectResponse, JSONResponse
 from fastapi.middleware.cors import CORSMiddleware
 
 from webdict.api.endpoint.dictionary import setup_dictionary_endpoints
@@ -9,6 +9,10 @@ from webdict.api.endpoint.rank import setup_rank_endpoints
 from webdict.api.endpoint.user import setup_user_endpoints
 from webdict.api.endpoint.word import setup_word_endpoints
 from webdict.api.endpoint.stats import setup_stats_endpoints
+from webdict.api.errors import AuthError
+from webdict.api.logs import get_logger
+
+logger = get_logger()
 
 
 def creat_fastapi_app() -> FastAPI:
@@ -35,6 +39,17 @@ def creat_fastapi_app() -> FastAPI:
         return RedirectResponse("/webdict/index.html")
 
     app.mount("/webdict", StaticFiles(directory="static"), name="webdict_static")
+
+    @subapi.exception_handler(AuthError)
+    async def auth_error_handler(request: Request, exc: AuthError):
+        message = f"Unauthorized: {exc}"
+        logger.error(message)
+        return JSONResponse(
+            status_code=401,
+            content={
+                'error': message,
+            },
+        )
 
     return app
 

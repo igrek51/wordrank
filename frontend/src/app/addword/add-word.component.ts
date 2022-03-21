@@ -14,8 +14,11 @@ export class AddWordComponent implements OnInit {
   wordName: string;
   definition: string;
 
-  constructor(private http: HttpClient, private alertService: AlertService, private userData: UserDataService) {
-  }
+  constructor(
+    private http: HttpClient, 
+    private alertService: AlertService, 
+    private userData: UserDataService,
+  ) {}
 
   ngOnInit() {
   }
@@ -31,7 +34,7 @@ export class AddWordComponent implements OnInit {
 
     return this.http.post<PayloadResponse>(url, addWordDTO).subscribe(
       response => this.addNewWordResult(response),
-      err => console.log(err)
+      err => this.alertService.reportResponseError(err)
     );
   }
 
