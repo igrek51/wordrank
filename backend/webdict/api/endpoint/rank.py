@@ -128,6 +128,8 @@ def _get_next_rank(user_id: str, dict_code: str, comparator) -> RankModel:
 
     random.shuffle(ranks)
     sorted_ranks = sorted(ranks, key=cmp_to_key(comparator))
+    if len(sorted_ranks) == 0:
+        return None
     rank = sorted_ranks[0]
 
     return _cleanup_rank_model(rank)

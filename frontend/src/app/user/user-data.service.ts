@@ -9,7 +9,7 @@ export class UserDataService implements OnInit {
   dictionary: string;
   reversedDictionary: boolean;
   changes = new EventEmitter<any>();
-  storage = sessionStorage; // sessionStorage or localStorage
+  storage = localStorage; // sessionStorage or localStorage
 
   constructor(private router: Router) {
     // default user logged in initially

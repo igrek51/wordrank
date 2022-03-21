@@ -109,6 +109,8 @@ def _dictionary_display_name(dictionary: models.Dictionary, reversed: bool) -> s
 
 
 def _make_progress_bar_data(count: int, all_count: int) -> ProgressBarData:
+    if all_count == 0:
+        return ProgressBarData(count=count, percentage='0')
     percentage = count * 100 / all_count
     percentage_str = f'{percentage:.2f}'
     return ProgressBarData(
