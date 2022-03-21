@@ -40,6 +40,7 @@ class Word(models.Model):
     dictionary = models.ForeignKey(Dictionary, on_delete=models.CASCADE, related_name='dictionary_id')
     name = models.CharField(max_length=255)
     definition = models.CharField(max_length=255)
+    create_time = models.DateTimeField(default=now)
 
     def __str__(self):
         return f'{self.name} - {self.definition}'

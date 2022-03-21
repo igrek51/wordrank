@@ -9,6 +9,7 @@ from webdict.api.endpoint.dictionary import is_dictionary_reversed
 from webdict.api.dto.payload import PayloadResponse
 from webdict.djangoapp.words import models
 from webdict.api.logs import get_logger
+from webdict.djangoapp.words.time import now
 
 logger = get_logger()
 
@@ -55,6 +56,7 @@ def _must_add_word(word: Word) -> Tuple[Word, str]:
         dictionary=dictionary,
         name=word.word,
         definition=word.definition,
+        create_time=now(),
     )
     word_model.save()
 
