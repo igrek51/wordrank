@@ -54,6 +54,7 @@ def _generate_dict_stats(
     training_in_progress_count = _count_ranks(rank_models, _is_rank_model_in_progress)
     touched_count = _count_ranks(rank_models, _is_rank_model_touched)
     cooling_down_count = _count_ranks(rank_models, _is_rank_model_cooling_down)
+    rankSum = sum([rank.rankValue for rank in rank_models])
 
     return StatisticsModel(
         dictDisplayName=dict_display_name,
@@ -62,6 +63,7 @@ def _generate_dict_stats(
         trainingInProgress=_make_progress_bar_data(training_in_progress_count, all_count),
         touched=_make_progress_bar_data(touched_count, all_count),
         coolingDown=_make_progress_bar_data(cooling_down_count, all_count),
+        rankSum=rankSum,
     )
 
 
@@ -75,9 +77,11 @@ def _generate_both_direction_stats(
     all_count = len(ranks)
 
     trained_count = _count_ranks(ranks, _predicate_both_ranks(_is_rank_model_trained))
-    training_in_progress_count = _count_ranks(ranks, lambda r: _is_rank_model_in_progress(r) and _is_rank_model_in_progress(r.counter_rank))
-    touched_count = _count_ranks(ranks, lambda r: _is_rank_model_touched(r) and _is_rank_model_touched(r.counter_rank))
-    cooling_down_count = _count_ranks(ranks, lambda r: _is_rank_model_cooling_down(r) and _is_rank_model_cooling_down(r.counter_rank))
+    training_in_progress_count = _count_ranks(ranks, _predicate_both_ranks(_is_rank_model_in_progress))
+    touched_count = _count_ranks(ranks, _predicate_both_ranks(_is_rank_model_touched))
+    cooling_down_count = _count_ranks(ranks, _predicate_both_ranks(_is_rank_model_cooling_down))
+    straight_rank_sum = sum([rank.rankValue for rank in ranks])
+    reversed_rank_sum = sum([rank.counter_rank.rankValue for rank in ranks])
 
     return StatisticsModel(
         dictDisplayName=dict_display_name,
@@ -86,6 +90,7 @@ def _generate_both_direction_stats(
         trainingInProgress=_make_progress_bar_data(training_in_progress_count, all_count),
         touched=_make_progress_bar_data(touched_count, all_count),
         coolingDown=_make_progress_bar_data(cooling_down_count, all_count),
+        rankSum=straight_rank_sum + reversed_rank_sum,
     )
 
 
@@ -129,4 +134,3 @@ def _is_rank_model_touched(rank: RankModel) -> bool:
 
 def _is_rank_model_cooling_down(rank: RankModel) -> bool:
     return get_single_cooldown_penalty(rank) > 0
-

@@ -13,3 +13,4 @@ class StatisticsModel(BaseModel):
     trainingInProgress: ProgressBarData
     touched: ProgressBarData
     coolingDown: ProgressBarData
+    rankSum: float

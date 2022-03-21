@@ -6,6 +6,8 @@ export class DictionaryStatisticsDTO {
   trainingInProgress: ProgressBarData;
   touched: ProgressBarData;
   coolingDown: ProgressBarData;
+
+  rankSum: number;
 }
 
 export class ProgressBarData {
