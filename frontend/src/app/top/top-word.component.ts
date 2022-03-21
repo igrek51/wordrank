@@ -29,9 +29,11 @@ export class TopWordComponent implements OnInit {
       return false;
     };
 
-    $(function () {
-      $('[data-toggle="tooltip"]').tooltip()
-    })
+    if (!this.isMobileDevice()) { // can't hover on tooltip on mobile devices
+      $(function () {
+        $('[data-toggle="tooltip"]').tooltip()
+      })
+    }
 
     this.sortby = this.route.snapshot.paramMap.get("sortby")
     this.nextTopWordInit();
@@ -133,6 +135,10 @@ export class TopWordComponent implements OnInit {
     } else if (event.key == 'r') {
       this.playWord();
     }
+  }
+
+  isMobileDevice(): boolean {
+    return /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)
   }
 
 }
