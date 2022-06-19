@@ -5,7 +5,7 @@ def setup_info_endpoints(app: FastAPI):
     @app.get("/info")
     async def info():
         return {
-            "environmentName": "WebDict",
-            "buildVersion": "2.0.1",
+            "environmentName": "WordRank",
+            "buildVersion": "2.1.0",
             "status": "UP",
         }

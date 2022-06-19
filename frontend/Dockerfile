@@ -12,4 +12,4 @@ RUN npm install
 
 COPY src /build/src
 RUN npm install
-RUN ng build --prod --output-path=static --deploy-url=/webdict/ --base-href=/webdict/
+RUN ng build --prod --output-path=static --deploy-url=/wordrank/ --base-href=/wordrank/

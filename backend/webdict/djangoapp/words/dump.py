@@ -7,10 +7,10 @@ from django.contrib.auth.decorators import login_required
 @login_required
 @csrf_exempt
 def dump_database(request):
-    db_filename = 'db/webdict.sqlite'
+    db_filename = 'db/wordrank.sqlite'
     dbfile = File(open(db_filename, "rb"))
     response = HttpResponse(dbfile, content_type='application/x-sqlite3')
-    output_filename = 'webdict.sqlite'
+    output_filename = 'wordrank.sqlite'
     response['Content-Disposition'] = 'attachment; filename=%s' % output_filename
     response['Content-Length'] = dbfile.size
     return response

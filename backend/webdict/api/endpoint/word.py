@@ -4,13 +4,13 @@ from fastapi import FastAPI, Cookie
 from pydantic import BaseModel
 from asgiref.sync import sync_to_async
 
-from webdict.api.database.database import find_dictionary_by_code, find_user_by_id, word_exists
-from webdict.api.dto.payload import PayloadResponse
-from webdict.api.session import verify_session
-from webdict.djangoapp.words import models
-from webdict.api.logs import get_logger
-from webdict.djangoapp.words.time import now
-from webdict.djangoapp.words.metrics import metric_word_added
+from wordrank.api.database.database import find_dictionary_by_code, find_user_by_id, word_exists
+from wordrank.api.dto.payload import PayloadResponse
+from wordrank.api.session import verify_session
+from wordrank.djangoapp.words import models
+from wordrank.api.logs import get_logger
+from wordrank.djangoapp.words.time import now
+from wordrank.djangoapp.words.metrics import metric_word_added
 
 logger = get_logger()
 

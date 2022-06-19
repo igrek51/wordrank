@@ -1,10 +1,10 @@
 import uvicorn
 from prometheus_client import make_asgi_app
 
-from webdict.djangoapp.app.asgi import application as django_app
-from webdict.api.api import creat_fastapi_app
-from webdict.api.dispatcher import AsgiDispatcher
-from webdict.api.logs import get_logger, configure_logs
+from wordrank.djangoapp.app.asgi import application as django_app
+from wordrank.api.api import creat_fastapi_app
+from wordrank.api.dispatcher import AsgiDispatcher
+from wordrank.api.logs import get_logger, configure_logs
 
 logger = get_logger()
 

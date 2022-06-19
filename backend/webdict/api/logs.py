@@ -15,7 +15,7 @@ def configure_logs(verbosity: int = 0, log_level: Optional[str] = None):
     else:
         level = _get_logging_level(log_level)
 
-    logger = logging.getLogger('webdict')
+    logger = logging.getLogger('wordrank')
     handler = logging.StreamHandler(stream=sys.stdout)
     handler.setLevel(level)
     formatter = logging.Formatter(fmt=LOG_FORMAT, datefmt=LOG_DATE_FORMAT)
@@ -30,7 +30,7 @@ def configure_logs(verbosity: int = 0, log_level: Optional[str] = None):
 
 
 def get_logger() -> logging.Logger:
-    return logging.getLogger('webdict')
+    return logging.getLogger('wordrank')
 
 
 def _get_logging_level(str_level: str) -> int:

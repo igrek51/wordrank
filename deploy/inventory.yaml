@@ -7,8 +7,8 @@ all:
     ansible_user: root
     ask_pass: false
     ssh_args: "-o PubkeyAuthentication=yes -o PasswordAuthentication=yes -o ControlMaster=auto -o ControlPersist=60s"
-    component_name: webdict-python
-    component_dir: "/opt/webdict-python"
+    component_name: wordrank
+    component_dir: "/opt/wordrank"
     component_dirs:
       - "{{ component_dir }}"
       - "{{ component_dir }}/volumes"
@@ -16,5 +16,5 @@ all:
     build_image: false
     copy_volumes: false
     copy_volumes_data:
-      - src: "../backend/db/webdict.sqlite"
-        dst: "{{ component_dir }}/volumes/db/webdict.sqlite"
+      - src: "../backend/db/wordrank.sqlite"
+        dst: "{{ component_dir }}/volumes/db/wordrank.sqlite"

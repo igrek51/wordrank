@@ -1,5 +1,5 @@
 from django.apps import AppConfig
 
 
-class WebdictConfig(AppConfig):
-    name = 'webdict.djangoapp.words'
+class WordrankConfig(AppConfig):
+    name = 'wordrank.djangoapp.words'

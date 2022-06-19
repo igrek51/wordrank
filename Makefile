@@ -21,12 +21,12 @@ build-backend:
 
 build-frontend:
 	cd frontend && \
-	DOCKER_BUILDKIT=1 docker build -t webdict-frontend:latest -f Dockerfile .
+	DOCKER_BUILDKIT=1 docker build -t wordrank-frontend:latest -f Dockerfile .
 
 build-frontend-replace: build-frontend
 	set -e ;\
 	rm -rf backend/static/* ;\
-	ID=$$(docker create webdict-frontend:latest) ;\
+	ID=$$(docker create wordrank-frontend:latest) ;\
 	echo $$ID ;\
 	docker cp "$$ID:/build/static" backend/ ;\
 	docker rm -v $$ID ;\

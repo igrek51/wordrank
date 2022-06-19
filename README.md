@@ -1,6 +1,10 @@
-# Webdict
+# WordRank
 
-Web application for vocabulary training with dynamically changing word ranks
+Web application for vocabulary training with dynamic word ranks.
+
+Your goal is to translate the words. 
+The more mistakes you make, the higher rank the word gets.
+So you'll memorize it better, once it appears more often.
 
 ## Running
 
@@ -25,7 +29,7 @@ Visit `/admin` endpoint to access administration panel and manage data models.
 In first place, setup your admin account:
 ```bash
 cd backend
-python webdict/djangoapp/manage.py createsuperuser
+python wordrank/djangoapp/manage.py createsuperuser
 ```
 
 ## Tech stack
@@ -40,6 +44,6 @@ python webdict/djangoapp/manage.py createsuperuser
 
 ## Example screenshots
 
-![](https://github.com/igrek51/webdict-python/blob/master/docs/img/webdict-screen-1.png)
+![](./docs/img/screen-1.png)
 
-![](https://github.com/igrek51/webdict-python/blob/master/docs/img/webdict-screen-2.png)
+![](./docs/img/screen-2.png)

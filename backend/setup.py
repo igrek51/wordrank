@@ -4,7 +4,7 @@ with open("requirements.txt", "r") as fh:
     install_requires = fh.read().splitlines()
 
 setuptools.setup(
-    name="webdict",
+    name="wordrank",
     version='0.0.1',
     author='igrek51',
     packages=setuptools.find_packages(),

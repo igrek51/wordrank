@@ -1,18 +1,18 @@
 FROM python:3.8-slim-buster
 
-WORKDIR /src/webdict
+WORKDIR /src/wordrank
 
-COPY requirements.txt setup.py /src/webdict/
-RUN pip install -r /src/webdict/requirements.txt
+COPY requirements.txt setup.py /src/wordrank/
+RUN pip install -r /src/wordrank/requirements.txt
 
-COPY static/. /src/webdict/static/
+COPY static/. /src/wordrank/static/
 
-COPY webdict/. /src/webdict/webdict/
-RUN cd /src/webdict && python setup.py develop
+COPY wordrank/. /src/wordrank/wordrank/
+RUN cd /src/wordrank && python setup.py develop
 
 ENV DEBUG false
-ENV DJANGO_SETTINGS_MODULE "webdict.djangoapp.app.settings"
-CMD python -u webdict/main.py
+ENV DJANGO_SETTINGS_MODULE "wordrank.djangoapp.app.settings"
+CMD python -u wordrank/main.py
 
 EXPOSE 8000
 STOPSIGNAL SIGTERM

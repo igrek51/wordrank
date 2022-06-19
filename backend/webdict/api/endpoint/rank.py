@@ -5,19 +5,19 @@ import random
 from fastapi import FastAPI, Cookie
 from asgiref.sync import sync_to_async
 
-from webdict.api.comparator.hardest import make_hardest_word_comparator
-from webdict.api.comparator.latest import make_latest_word_comparator
-from webdict.api.comparator.oldest import make_oldest_word_comparator
-from webdict.api.comparator.top import make_top_word_comparator
-from webdict.api.database.database import find_dictionary_by_code, find_rank_by_id, find_user_by_id, generate_all_ranks, generate_all_userwords, generate_all_words
-from webdict.api.dto.payload import PayloadResponse
-from webdict.api.dto.rank import InternalRank, ExternalRank
-from webdict.api.endpoint.dictionary import is_dictionary_reversed
-from webdict.djangoapp.words import models
-from webdict.djangoapp.words.time import datetime_to_str, now
-from webdict.djangoapp.words.metrics import metric_good_answers, metric_bad_answers, metric_all_answers
-from webdict.api.logs import get_logger
-from webdict.api.session import verify_session
+from wordrank.api.comparator.hardest import make_hardest_word_comparator
+from wordrank.api.comparator.latest import make_latest_word_comparator
+from wordrank.api.comparator.oldest import make_oldest_word_comparator
+from wordrank.api.comparator.top import make_top_word_comparator
+from wordrank.api.database.database import find_dictionary_by_code, find_rank_by_id, find_user_by_id, generate_all_ranks, generate_all_userwords, generate_all_words
+from wordrank.api.dto.payload import PayloadResponse
+from wordrank.api.dto.rank import InternalRank, ExternalRank
+from wordrank.api.endpoint.dictionary import is_dictionary_reversed
+from wordrank.djangoapp.words import models
+from wordrank.djangoapp.words.time import datetime_to_str, now
+from wordrank.djangoapp.words.metrics import metric_good_answers, metric_bad_answers, metric_all_answers
+from wordrank.api.logs import get_logger
+from wordrank.api.session import verify_session
 
 logger = get_logger()
 

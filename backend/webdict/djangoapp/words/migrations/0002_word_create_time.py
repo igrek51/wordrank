@@ -1,5 +1,5 @@
 from django.db import migrations, models
-import webdict.djangoapp.words.time
+import wordrank.djangoapp.words.time
 
 
 class Migration(migrations.Migration):
@@ -12,6 +12,6 @@ class Migration(migrations.Migration):
         migrations.AddField(
             model_name='word',
             name='create_time',
-            field=models.DateTimeField(default=webdict.djangoapp.words.time.now),
+            field=models.DateTimeField(default=wordrank.djangoapp.words.time.now),
         ),
     ]

@@ -3,14 +3,14 @@ from typing import Callable, List
 from fastapi import FastAPI, Cookie
 from asgiref.sync import sync_to_async
 
-from webdict.api.comparator.top import get_single_cooldown_penalty
-from webdict.api.database.database import find_dictionary_by_code, find_user_by_id, generate_all_ranks
-from webdict.api.dto.rank import InternalRank
-from webdict.api.dto.stats import ProgressBarData, StatisticsModel
-from webdict.api.endpoint.rank import combine_counter_ranks, rank_model_to_internal
-from webdict.djangoapp.words import models
-from webdict.api.logs import get_logger
-from webdict.api.session import verify_session
+from wordrank.api.comparator.top import get_single_cooldown_penalty
+from wordrank.api.database.database import find_dictionary_by_code, find_user_by_id, generate_all_ranks
+from wordrank.api.dto.rank import InternalRank
+from wordrank.api.dto.stats import ProgressBarData, StatisticsModel
+from wordrank.api.endpoint.rank import combine_counter_ranks, rank_model_to_internal
+from wordrank.djangoapp.words import models
+from wordrank.api.logs import get_logger
+from wordrank.api.session import verify_session
 
 
 logger = get_logger()

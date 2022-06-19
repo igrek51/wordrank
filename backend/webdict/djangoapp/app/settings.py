@@ -16,7 +16,7 @@ ALLOWED_HOSTS = ['*']
 # Application definition
 
 INSTALLED_APPS = [
-    'webdict.djangoapp.words.apps.WebdictConfig',
+    'wordrank.djangoapp.words.apps.WordrankConfig',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -35,7 +35,7 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
 
-ROOT_URLCONF = 'webdict.djangoapp.app.urls'
+ROOT_URLCONF = 'wordrank.djangoapp.app.urls'
 
 TEMPLATES = [
     {
@@ -62,7 +62,7 @@ WSGI_APPLICATION = 'app.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': 'db/webdict.sqlite',
+        'NAME': 'db/wordrank.sqlite',
     }
 }
 

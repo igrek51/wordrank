@@ -1,14 +1,14 @@
 version: '3'
 services:
 
-  webdict-python:
-    image: webdict-python
-    container_name: webdict-python
+  wordrank:
+    image: wordrank
+    container_name: wordrank
     restart: unless-stopped
     user: '1000'
     ports:
       - "8080:8000"
     volumes:
-      - ./volumes/db:/src/webdict/db
+      - ./volumes/db:/src/wordrank/db
     env_file:
       - ./.env

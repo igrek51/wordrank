@@ -12,23 +12,23 @@ run-docker: build
 	mkdir -p volumes
 	cp -r db volumes/
 
-	docker-compose up webdict-python
-	docker-compose rm -f webdict-python
+	docker-compose up wordrank
+	docker-compose rm -f wordrank
 
 run-django:
-	python -u webdict/djangoapp/manage.py runserver 0.0.0.0:8000 --noreload
+	python -u wordrank/djangoapp/manage.py runserver 0.0.0.0:8000 --noreload
 
 run-fastapi:
-	python -u webdict/main.py
+	python -u wordrank/main.py
 
 run: run-fastapi
 
 recreate-db:
-	rm -f db/webdict.sqlite
-	python webdict/djangoapp/manage.py makemigrations words
-	python webdict/djangoapp/manage.py migrate
-	python webdict/djangoapp/manage.py createsuperuser
+	rm -f db/wordrank.sqlite
+	python wordrank/djangoapp/manage.py makemigrations words
+	python wordrank/djangoapp/manage.py migrate
+	python wordrank/djangoapp/manage.py createsuperuser
 
 add-migration:
-	python webdict/djangoapp/manage.py makemigrations words
-	python webdict/djangoapp/manage.py migrate
+	python wordrank/djangoapp/manage.py makemigrations words
+	python wordrank/djangoapp/manage.py migrate

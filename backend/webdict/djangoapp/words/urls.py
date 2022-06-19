@@ -1,3 +1,3 @@
-app_name = 'webdict.djangoapp.words'
+app_name = 'wordrank.djangoapp.words'
 urlpatterns = [
 ]

@@ -1,5 +1,5 @@
-from webdict.api.dto.rank import InternalRank
-from webdict.djangoapp.words.time import datetime_to_timestamp, now, seconds_ago
+from wordrank.api.dto.rank import InternalRank
+from wordrank.djangoapp.words.time import datetime_to_timestamp, now, seconds_ago
 
 
 COOLDOWN_SECONDS = 30 * 60

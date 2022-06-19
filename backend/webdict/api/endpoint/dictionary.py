@@ -3,7 +3,7 @@ from typing import Dict, Iterable, List
 from fastapi import FastAPI
 from asgiref.sync import sync_to_async
 
-from webdict.djangoapp.words import models
+from wordrank.djangoapp.words import models
 
 
 def setup_dictionary_endpoints(app: FastAPI):

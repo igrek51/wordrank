@@ -2,7 +2,7 @@
 
 from django.db import migrations, models
 import django.db.models.deletion
-import webdict.djangoapp.words.models
+import wordrank.djangoapp.words.models
 
 
 class Migration(migrations.Migration):
@@ -16,20 +16,20 @@ class Migration(migrations.Migration):
         migrations.CreateModel(
             name='Dictionary',
             fields=[
-                ('id', models.CharField(default=webdict.djangoapp.words.models.new_uuid, max_length=36, primary_key=True, serialize=False)),
+                ('id', models.CharField(default=wordrank.djangoapp.words.models.new_uuid, max_length=36, primary_key=True, serialize=False)),
             ],
         ),
         migrations.CreateModel(
             name='Language',
             fields=[
-                ('id', models.CharField(default=webdict.djangoapp.words.models.new_uuid, max_length=36, primary_key=True, serialize=False)),
+                ('id', models.CharField(default=wordrank.djangoapp.words.models.new_uuid, max_length=36, primary_key=True, serialize=False)),
                 ('code', models.CharField(max_length=255)),
             ],
         ),
         migrations.CreateModel(
             name='User',
             fields=[
-                ('id', models.CharField(default=webdict.djangoapp.words.models.new_uuid, max_length=36, primary_key=True, serialize=False)),
+                ('id', models.CharField(default=wordrank.djangoapp.words.models.new_uuid, max_length=36, primary_key=True, serialize=False)),
                 ('login', models.CharField(max_length=255)),
                 ('token', models.CharField(max_length=255)),
             ],
@@ -37,7 +37,7 @@ class Migration(migrations.Migration):
         migrations.CreateModel(
             name='Word',
             fields=[
-                ('id', models.CharField(default=webdict.djangoapp.words.models.new_uuid, max_length=36, primary_key=True, serialize=False)),
+                ('id', models.CharField(default=wordrank.djangoapp.words.models.new_uuid, max_length=36, primary_key=True, serialize=False)),
                 ('name', models.CharField(max_length=255)),
                 ('definition', models.CharField(max_length=255)),
                 ('dictionary', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='dictionary_id', to='words.dictionary')),
@@ -46,7 +46,7 @@ class Migration(migrations.Migration):
         migrations.CreateModel(
             name='UserWord',
             fields=[
-                ('id', models.CharField(default=webdict.djangoapp.words.models.new_uuid, max_length=36, primary_key=True, serialize=False)),
+                ('id', models.CharField(default=wordrank.djangoapp.words.models.new_uuid, max_length=36, primary_key=True, serialize=False)),
                 ('user', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='user_id', to='words.user')),
                 ('word', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='word_id', to='words.word')),
             ],
@@ -54,7 +54,7 @@ class Migration(migrations.Migration):
         migrations.CreateModel(
             name='Rank',
             fields=[
-                ('id', models.CharField(default=webdict.djangoapp.words.models.new_uuid, max_length=36, primary_key=True, serialize=False)),
+                ('id', models.CharField(default=wordrank.djangoapp.words.models.new_uuid, max_length=36, primary_key=True, serialize=False)),
                 ('reversed_dictionary', models.BooleanField()),
                 ('last_use', models.DateTimeField(blank=True, null=True)),
                 ('rank_value', models.DecimalField(decimal_places=3, default=0, max_digits=6)),

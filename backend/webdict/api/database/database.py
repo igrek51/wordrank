@@ -1,6 +1,6 @@
 from typing import Iterable
-from webdict.api.errors import EntityNotFound
-from webdict.djangoapp.words import models
+from wordrank.api.errors import EntityNotFound
+from wordrank.djangoapp.words import models
 
 
 def find_user_by_id(id: str) -> models.User:
