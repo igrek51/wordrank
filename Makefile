@@ -5,7 +5,8 @@ setup:
 	. venv/bin/activate &&\
 	pip install --upgrade pip setuptools &&\
 	(cd backend && make setup)
-	@echo Activate your venv: . venv/bin/activate
+	@echo Activate your venv:
+	@echo . venv/bin/activate
 
 run-local:
 	(cd backend && make run-fastapi)
@@ -44,6 +45,6 @@ deploy: build-backend
 	cd deploy && \
 	ansible-playbook -i inventory.yaml deploy-playbook.yaml
 
-deploy-copy-volumes: build-backend
+deploy-with-volumes: build-backend
 	cd deploy && \
 	ansible-playbook -i inventory.yaml deploy-playbook.yaml --extra-vars "copy_volumes=true"
