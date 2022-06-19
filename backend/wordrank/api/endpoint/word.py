@@ -10,7 +10,7 @@ from wordrank.api.session import verify_session
 from wordrank.djangoapp.words import models
 from wordrank.api.logs import get_logger
 from wordrank.djangoapp.words.time import now
-from wordrank.djangoapp.words.metrics import metric_word_added
+from wordrank.api.metrics import metric_word_added
 
 logger = get_logger()
 

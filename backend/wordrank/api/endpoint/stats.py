@@ -1,10 +1,11 @@
+from dataclasses import dataclass
 from typing import Callable, List
 
 from fastapi import FastAPI, Cookie
 from asgiref.sync import sync_to_async
 
 from wordrank.api.comparator.top import get_single_cooldown_penalty
-from wordrank.api.database.database import find_dictionary_by_code, find_user_by_id, generate_all_ranks
+from wordrank.api.database.database import find_dictionary_by_code, find_user_by_id, generate_all_ranks, list_dictionaries, list_users
 from wordrank.api.dto.rank import InternalRank
 from wordrank.api.dto.stats import ProgressBarData, StatisticsModel
 from wordrank.api.endpoint.rank import combine_counter_ranks, rank_model_to_internal
@@ -23,6 +24,37 @@ def setup_stats_endpoints(app: FastAPI):
         return await _list_stats(user_id, dict_code)
 
 
+@dataclass
+class UserDictStatistics:
+    user_id: str
+    dict_code: str
+    straight_ranks: StatisticsModel
+    reversed_ranks: StatisticsModel
+    both_ranks: StatisticsModel
+
+
+def list_all_stats() -> List[UserDictStatistics]:
+    logger.info('listing all statistics...')
+
+    stats: List[UserDictStatistics] = []
+    users = list(list_users())
+    dictionaries = list(list_dictionaries())
+    
+    for user in users:
+        for dictionary in dictionaries:
+            straight_ranks = list(generate_all_ranks(user, dictionary, False))
+            reversed_ranks = list(generate_all_ranks(user, dictionary, True))
+
+            stats.append(UserDictStatistics(
+                user_id=user.id,
+                dict_code=f'{dictionary.source_language}-{dictionary.target_language}',
+                straight_ranks=_generate_dict_stats(dictionary, False, straight_ranks),
+                reversed_ranks=_generate_dict_stats(dictionary, True, reversed_ranks),
+                both_ranks=_generate_both_direction_stats(dictionary, straight_ranks, reversed_ranks),
+            ))
+
+    return stats
+
 @sync_to_async
 def _list_stats(user_id: str, dict_code: str) -> List[StatisticsModel]:
     user = find_user_by_id(user_id)
@@ -32,9 +64,9 @@ def _list_stats(user_id: str, dict_code: str) -> List[StatisticsModel]:
     reversed_ranks = list(generate_all_ranks(user, dictionary, True))
 
     dict_stats: List[StatisticsModel] = [
-        _generate_dict_stats(dictionary, False, straight_ranks), 
-        _generate_dict_stats(dictionary, True, reversed_ranks), 
-        _generate_both_direction_stats(dictionary, straight_ranks, reversed_ranks), 
+        _generate_dict_stats(dictionary, False, straight_ranks),
+        _generate_dict_stats(dictionary, True, reversed_ranks),
+        _generate_both_direction_stats(dictionary, straight_ranks, reversed_ranks),
     ]
 
     return dict_stats

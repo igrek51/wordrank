@@ -88,3 +88,15 @@ def generate_all_words(
     )
     for model in objects:
         yield model
+
+
+def list_users() -> Iterable[models.User]:
+    objects = models.User.objects.all().order_by('login')
+    for object in objects:
+        yield object
+
+
+def list_dictionaries() -> Iterable[models.Dictionary]:
+    objects = models.Dictionary.objects.all()
+    for object in objects:
+        yield object

@@ -15,7 +15,7 @@ from wordrank.api.dto.rank import InternalRank, ExternalRank
 from wordrank.api.endpoint.dictionary import is_dictionary_reversed
 from wordrank.djangoapp.words import models
 from wordrank.djangoapp.words.time import datetime_to_str, now
-from wordrank.djangoapp.words.metrics import metric_good_answers, metric_bad_answers, metric_all_answers
+from wordrank.api.metrics import metric_good_answers, metric_bad_answers, metric_all_answers
 from wordrank.api.logs import get_logger
 from wordrank.api.session import verify_session
 
