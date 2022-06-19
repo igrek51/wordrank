@@ -10,6 +10,7 @@ from webdict.api.session import verify_session
 from webdict.djangoapp.words import models
 from webdict.api.logs import get_logger
 from webdict.djangoapp.words.time import now
+from webdict.djangoapp.words.metrics import metric_word_added
 
 logger = get_logger()
 
@@ -32,6 +33,7 @@ def setup_word_endpoints(app: FastAPI):
 def _add_word(word: Word) -> PayloadResponse:
     try:
         response, message = _must_add_word(word)
+        metric_word_added.inc()
         return PayloadResponse(payload=response, message=message)
     except BaseException as e:
         return PayloadResponse(

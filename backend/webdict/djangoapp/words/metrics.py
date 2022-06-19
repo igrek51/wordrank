@@ -12,3 +12,7 @@ metric_all_answers = Counter(
     'webdict_all_answers',
     'total number of all answers',
 )
+metric_word_added = Counter(
+    'webdict_word_added',
+    'total number of added words',
+)

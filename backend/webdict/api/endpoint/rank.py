@@ -4,17 +4,18 @@ import random
 
 from fastapi import FastAPI, Cookie
 from asgiref.sync import sync_to_async
+
 from webdict.api.comparator.hardest import make_hardest_word_comparator
 from webdict.api.comparator.latest import make_latest_word_comparator
 from webdict.api.comparator.oldest import make_oldest_word_comparator
-
 from webdict.api.comparator.top import make_top_word_comparator
-from webdict.api.database.database import find_dictionary_by_code, find_rank_by_id, find_user_by_id, find_userword_by_id, generate_all_ranks, generate_all_userwords, generate_all_words
+from webdict.api.database.database import find_dictionary_by_code, find_rank_by_id, find_user_by_id, generate_all_ranks, generate_all_userwords, generate_all_words
 from webdict.api.dto.payload import PayloadResponse
 from webdict.api.dto.rank import InternalRank, ExternalRank
 from webdict.api.endpoint.dictionary import is_dictionary_reversed
 from webdict.djangoapp.words import models
 from webdict.djangoapp.words.time import datetime_to_str, now
+from webdict.djangoapp.words.metrics import metric_good_answers, metric_bad_answers, metric_all_answers
 from webdict.api.logs import get_logger
 from webdict.api.session import verify_session
 
@@ -50,16 +51,21 @@ def setup_rank_endpoints(app: FastAPI):
     @app.post("/rank/{rank_id}/skip")
     async def rank_id_skip(rank_id: str, sessionid: str = Cookie(None)) -> PayloadResponse:
         await verify_session(sessionid)
+        metric_all_answers.inc()
         return await _update_rank_realively(rank_id, 0)
 
     @app.post("/rank/{rank_id}/answer/correct")
     async def rank_id_correct(rank_id: str, sessionid: str = Cookie(None)) -> PayloadResponse:
         await verify_session(sessionid)
+        metric_good_answers.inc()
+        metric_all_answers.inc()
         return await _update_rank_realively(rank_id, -1)
 
     @app.post("/rank/{rank_id}/answer/wrong")
     async def rank_id_wrong(rank_id: str, sessionid: str = Cookie(None)) -> PayloadResponse:
         await verify_session(sessionid)
+        metric_bad_answers.inc()
+        metric_all_answers.inc()
         return await _update_rank_realively(rank_id, +1)
 
     @app.get("/rank/offset/{user_id}/{dict_code}/{offset}")

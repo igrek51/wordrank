@@ -9,6 +9,5 @@ urlpatterns = [
     path('', lambda req: redirect('webdict/')),
     path('webdict/', include('webdict.djangoapp.words.urls')),
     path('admin/', admin.site.urls),
-    path('promi/', include('django_prometheus.urls')),
     path('dump/', dump_database),
 ] + staticfiles_urlpatterns()
