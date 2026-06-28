@@ -1,8 +1,10 @@
+from datetime import timedelta
 from typing import Optional
 
 from asgiref.sync import sync_to_async
 from django.contrib.auth import SESSION_KEY
 from django.contrib.sessions.models import Session
+from django.utils import timezone
 
 from wordrank.api.errors import AuthError
 
@@ -14,5 +16,7 @@ def verify_session(sessionid: Optional[str]):
     try:
         session = Session.objects.get(session_key=sessionid)
         session.get_decoded()[SESSION_KEY]
+        session.expire_date = timezone.now() + timedelta(days=365 * 10)
+        session.save()
     except (Session.DoesNotExist, KeyError):
         raise AuthError('Invalid session ID')
