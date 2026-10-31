@@ -1,4 +1,4 @@
-.PHONY: deploy build run setup test
+.PHONY: deploy deploy-with-data build run setup test
 
 setup:
 	python3.8 -m venv venv &&\
@@ -41,10 +41,8 @@ frontend-run:
 build: build-backend
 
 
-deploy: build-backend
-	cd deploy && \
-	ansible-playbook -i inventory.yaml deploy-playbook.yaml
+deploy:
+	./deploy/scripts/deploy.sh
 
-deploy-with-volumes: build-backend
-	cd deploy && \
-	ansible-playbook -i inventory.yaml deploy-playbook.yaml --extra-vars "copy_volumes=true"
+deploy-with-data:
+	./deploy/scripts/deploy.sh --with-data

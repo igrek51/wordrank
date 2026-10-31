@@ -1,13 +1,13 @@
-version: '3'
-services:
+name: wordrank
 
+services:
   wordrank:
-    image: wordrank
+    image: ${WORD_RANK_IMAGE:-registry.gitlab.com/igrek51/registry/wordrank:latest}
     container_name: wordrank
     restart: unless-stopped
-    user: '1000'
+    user: "1000"
     ports:
-      - "8080:8000"
+      - "127.0.0.1:8080:8000"
     volumes:
       - ./volumes/db:/src/wordrank/db
     env_file:
