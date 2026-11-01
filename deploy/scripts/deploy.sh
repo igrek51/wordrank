@@ -68,7 +68,7 @@ ssh "$HOST" "chmod 600 '$REMOTE_DIR/.env'"
 if [ "$WITH_DATA" = 1 ]; then
     [ -f "$DB" ] || { echo "error: missing backup $DB" >&2; exit 1; }
     echo "==> restoring wordrank.sqlite from backup"
-    ssh "$HOST" "cd '$REMOTE_DIR' && WORD_RANK_IMAGE='$IMAGE' docker compose stop wordrank" || true
+    ssh "$HOST" "cd '$REMOTE_DIR' && WORD_RANK_IMAGE='$IMAGE' COMPOSE_DISABLE_ENV_FILE=1 docker compose stop wordrank" || true
     rsync -avh --info=progress2 --no-owner --no-group --rsync-path="sudo rsync" \
         "$DB" "$HOST:$REMOTE_DIR/volumes/db/"
 fi
@@ -77,16 +77,16 @@ echo "==> data dir -> uid 1000"
 ssh "$HOST" "sudo chown -R 1000:1000 '$REMOTE_DIR/volumes/db'"
 
 echo "==> pulling ${IMAGE} on ${HOST}"
-if ! ssh "$HOST" "cd '$REMOTE_DIR' && WORD_RANK_IMAGE='$IMAGE' docker compose pull wordrank"; then
+if ! ssh "$HOST" "cd '$REMOTE_DIR' && WORD_RANK_IMAGE='$IMAGE' COMPOSE_DISABLE_ENV_FILE=1 docker compose pull wordrank"; then
     echo "error: pull failed; log in on ${HOST} with:" >&2
     echo "       ssh -t ${HOST} docker login ${REGISTRY}" >&2
     exit 1
 fi
 
 echo "==> recreating container"
-ssh "$HOST" "cd '$REMOTE_DIR' && WORD_RANK_IMAGE='$IMAGE' docker compose up -d --force-recreate --remove-orphans"
+ssh "$HOST" "cd '$REMOTE_DIR' && WORD_RANK_IMAGE='$IMAGE' COMPOSE_DISABLE_ENV_FILE=1 docker compose up -d --force-recreate --remove-orphans"
 
 echo "==> container status"
-ssh "$HOST" "cd '$REMOTE_DIR' && WORD_RANK_IMAGE='$IMAGE' docker compose ps"
+ssh "$HOST" "cd '$REMOTE_DIR' && WORD_RANK_IMAGE='$IMAGE' COMPOSE_DISABLE_ENV_FILE=1 docker compose ps"
 
 echo "==> done: http://${HOST}:8080/ (nginx: https://wordrank.igrek.dev)"

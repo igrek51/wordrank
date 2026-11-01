@@ -8,7 +8,9 @@ services:
     user: "1000"
     ports:
       - "127.0.0.1:8080:8000"
+      - "172.17.0.1:8080:8000"
     volumes:
       - ./volumes/db:/src/wordrank/db
     env_file:
-      - ./.env
+      - path: ./.env
+        format: raw
